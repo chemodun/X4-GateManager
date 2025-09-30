@@ -1,0 +1,157 @@
+[size=140][u]Gate Manager: connecting ... sectors[/u][/size]
+
+Adds map context actions to build, connect and destroy player-defined Jump Gates and Accelerators.
+
+[size=130][u]Compatibility[/u][/size]
+
+Compatible with [b]X4: Foundations 7.60[/b] and upper. At least it written and tested with versions [b]7.60[/b] and [b]8.00[/b].
+
+[size=130][u]Features[/u][/size]
+[list]
+[*] Build Jump Gates and Accelerators in the Galaxy Map view
+[*] Connect Jump Gates and Accelerators to create travel routes (is only possible to connect Gates to Gates or Accelerators to Accelerators)
+[*] Disconnect Jump Gates and Accelerators (player-built ones as well as original ones)
+[*] Destroy unwanted Jump Gates and Accelerators (only player-built ones)
+[*] For Gates used the [b]props_gates_anc_gate_macro[/b] model, for Accelerators used the [b]props_gates_orb_accelerator_01_macro[/b] model
+[/list]
+[size=130][u]Download[/u][/size]
+
+You can download the latest version via Steam client - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3577926900]Gate Manager[/url]
+Or you can do it via the Nexus Mods - [url=https://www.nexusmods.com/x4foundations/mods/1842]Gate Manager[/url]
+
+[size=130][u]Dependencies[/u][/size]
+
+As it uses context menu in the Galaxy Map view, it requires the [b]Mod Support APIs[/b] by [url=https://next.nexusmods.com/profile/sirnukes?gameId=2659]SirNukes[/url] to be installed and enabled. Version [b]1.93[/b] and upper is required.
+[list]
+[*] It is available via Steam - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2042901274]SirNukes Mod Support APIs[/url]
+[*] Or via the Nexus Mods - [url=https://www.nexusmods.com/x4foundations/mods/503]Mod Support APIs[/url]
+[/list]
+[size=130][u]How to use[/u][/size]
+
+After installation, you can use the context menu in the Galaxy Map view to build, connect, disconnect and destroy Jump Gates and Accelerators.
+
+[size=125][u]Build[/u][/size]
+[list]
+[*] Open the Galaxy Map view
+[*] Right-click in the sector on position where you want to build a Jump Gate or an Accelerator
+[*] Select the [b]Build Jump Gate[/b] or [b]Build Accelerator[/b] option from the context menu
+[*] The Jump Gate or Accelerator will be built in the selected sector exactly in the selected position.
+[/list]
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_build.png[/img][/spoiler]
+
+By default, the Jump Gate or Accelerator will be oriented from "South" to "North". If you want to change the orientation, please read the appropriate section below.
+
+[size=125][u]Connect[/u][/size]
+
+Applicable as for newly built objects as well as for original ones.
+[list]
+[*] Open the Galaxy Map view
+[*] Right-click on the Jump Gate or Accelerator you want to connect. (It must be already built and inactive, i.e. not currently connected.)
+[*] Select [b]Select [Inactive Jump Gate|Accelerator] to connect[/b] option from the context menu
+[*] This object will be marked as selected
+[*] Right-click on the Jump Gate or Accelerator you want to connect to
+[*] Select [b]Connect [Sector] to [Sector][/b] option from the context menu
+[*] Appropriate connection will be created between the two objects
+[/list]
+[size=120][u]Inactive object (not currently connected)[/u][/size]
+
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_for_inactive_object.png[/img][/spoiler]
+
+[size=120][u]Selected object[/u][/size]
+
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/selected_object.png[/img][/spoiler]
+
+[size=120][u]Context menu when other object is selected to connect to[/u][/size]
+
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_if_other_object_selected.png[/img][/spoiler]
+
+[size=120][u]Limitations[/u][/size]
+[list]
+[*] It is not possible to connect already connected objects
+[*] It is only possible to connect Jump Gates to Jump Gates or Accelerators to Accelerators
+[*] It is only possible to connect objects in different sectors
+[/list]
+[size=115][u]Deselect[/u][/size]
+
+If you already marked some object as selected. to make possible to select another one, you need to deselect the already selected object.
+[list]
+[*] Right-click on the already selected Jump Gate or Accelerator. (It must be already marked as selected if you not changed the selection.)
+[*] Select [b]Deselect[/b] option from the context menu
+[/list]
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_on_selected_object.png[/img][/spoiler]
+
+[size=125][u]Disconnect[/u][/size]
+[list]
+[*] Open the Galaxy Map view
+[*] Right-click on the Jump Gate or Accelerator you want to disconnect. (It must be already built and active, i.e. currently connected.)
+[*] Select [b]Disconnect[/b] option from the context menu
+[*] The connection will be removed and the objects will be inactive
+[*] You can connect them again, or destroy (if it was a player-built one) them if you don't need them anymore
+[/list]
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_on_active_object.png[/img][/spoiler]
+
+[size=125][u]Destroy[/u][/size]
+[list]
+[*] Open the Galaxy Map view
+[*] Right-click on the Jump Gate or Accelerator you want to destroy. (It must be built by the player and inactive, i.e. not currently connected.)
+[*] Select [b]Destroy ...[/b] option from the context menu
+[*] The object will be removed from the Galaxy Map
+[/list]
+[b]Warning:[/b] Some original gates and accelerators can be identified as player-built ones, due to some specifics. So please be careful when destroying the objects.
+
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_for_inactive_object.png[/img][/spoiler]
+
+[size=125][u]Change orientation[/u][/size]
+
+By default, the Jump Gate or Accelerator will be oriented from "South" to "North" for the current map orientation.
+It is mean, that you will "enter" the object from "South" to "North". But exiting the opposite object will be from "North" to "South".
+
+So, if you want to make a route more effective, please orient the Gates/Accelerators accordingly, i.e. to have the "entrance" in the direction of the destination sector. From both sides of the connection.
+
+Please take in account, that the orientation is dependent on the current map orientation. By default, the map orientation is "South" to "North", i.e. "South" is at the bottom of the map and "North" is at the top of the map.
+I.e. if you want to build the object oriented from "West" to "East", i.e. target sector is on a right hand for current, you need to rotate the map to have "West" at the bottom of the map (for source sector).
+And make it opposite for the target sector, i.e. rotate the map to have "East" at the bottom of the map.
+All of these is valid if you place the object in the closest border to opposite sector.
+
+To reset map orientation, please use the '.' hotkey to focus map on your current position. In this case orientation will be "South" to "North" for a whole map.
+
+[size=130][u]Logging[/u][/size]
+
+[size=125][u]Notifications[/u][/size]
+
+All your actions will be shown in notification window (not really useful in the Map view).
+
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/notifications.png[/img][/spoiler]
+
+[size=125][u]Logbook[/u][/size]
+
+In addition, all your actions will be logged in the logbook (accessible via the Player Information menu).
+
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/logbook.png[/img][/spoiler]
+
+[size=130][u]Video[/u][/size]
+
+[url=https://www.youtube.com/watch?v=bpB_Y5TShgw]Video demonstration of the Gate Manager. Short one[/url]
+[url=https://www.youtube.com/watch?v=4TyMagNIVC0]Video demonstration of the Gate Manager. Full one[/url]
+
+[size=130][u]Credits[/u][/size]
+[list]
+[*] Author: Chem O`Dun, on [url=https://next.nexusmods.com/profile/ChemODun/mods?gameId=2659]Nexus Mods[/url] and [url=https://steamcommunity.com/id/chemodun/myworkshopfiles/?appid=392160]Steam Workshop[/url]
+[*] [i]"X4: Foundations"[/i] is a trademark of [url=https://www.egosoft.com]Egosoft[/url].
+[/list]
+[size=130][u]Acknowledgements[/u][/size]
+[list]
+[*] [url=https://www.egosoft.com]EGOSOFT[/url] - for the game itself (In fact - for the series of games)!
+[*] Enormous big thank to [url=https://github.com/Forleyor]Forleyor[/url], for his help with Lua! For make me curious about it and for his patience! Without him I will never touched the Lua and started to make this mod!
+[*] Thanks to all members of the [url=https://discord.com/channels/337098290917146624/502057640877228042]X4 modding channel[/url] on [url=https://discord.com/invite/zhs8sRpd3m]Egosoft Discord[/url].
+[*] Thanks to [url=https://next.nexusmods.com/profile/sirnukes?gameId=2659]SirNukes[/url] for his awesome [b]Mod Support APIs[/b] without which this mod would not be possible!
+[/list]
+[size=130][u]Change Log[/u][/size]
+
+[size=125][u][1.00] - 2025-10-01[/u][/size]
+[list]
+[*] Added
+[list]
+[*] Initial public version
+[/list]
+[/list]
