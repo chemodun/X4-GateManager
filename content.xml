@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <content
-  id=""
+  id="ws_3577926900"
   name="Gate Manager"
-  description="Adds map context actions to build, connect and destroy Player defined Jump Gates and Accelerators."
   author="Chem O`Dun"
   version="100"
   date="2025-10-01"
   save="false"
-  sync="false">
-
+  sync="false"
+  lastupdate="1759274143"
+  description="Adds map context actions to build, connect and destroy Player defined Jump Gates and Accelerators.">
   <text language="7" description="Adds map context actions to build, connect and destroy Player defined Jump Gates and Accelerator." />
   <!-- France -->
   <text language="33"
@@ -47,7 +47,6 @@
   <!-- Ukraine -->
   <text language="380"
     description="Додає дії контекстного меню карти для будівництва, з’єднання та знищення визначених гравцем стрибкових брам і прискорювачів." />
-
   <dependency version="760" />
-  <dependency id="ws_2042901274" optional="false" />
+  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
 </content>
