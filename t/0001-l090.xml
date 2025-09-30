@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkey -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">Geçit Yöneticisi</t>
+      <t id="1011">Bağlanmak için %s öğesini seçin</t>
+      <t id="1012">%s öğesinin seçimini kaldırın</t>
+      <t id="1021">%s öğesini %s ile bağlayın</t>
+      <t id="1022">Seçilene bağlanın</t>
+      <t id="1031">Bağlantıyı kesin</t>
+      <t id="2001">%s (%s) inşa edildi</t>
+      <t id="2002">%s (%s) yok edildi</t>
+      <t id="2011">%s (%s) diğer %s ile bağlanmak üzere seçildi</t>
+      <t id="2012">%s (%s) seçimi kaldırıldı</t>
+      <t id="2021">%s (%s) ile %s (%s) arasında bağlantı kuruldu</t>
+      <t id="2031">%s (%s) ile %s (%s) arasındaki bağlantı kesildi</t>
+    </page>
+  </add>
+</diff>

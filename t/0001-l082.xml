@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Korean -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">게이트 관리자</t>
+      <t id="1011">연결할 %s 선택</t>
+      <t id="1012">%s 선택 해제</t>
+      <t id="1021">%s을(를) %s에 연결</t>
+      <t id="1022">선택한 항목에 연결</t>
+      <t id="1031">연결 해제</t>
+      <t id="2001">%s이(가) %s에 건설되었습니다</t>
+      <t id="2002">%s이(가) %s에서 파괴되었습니다</t>
+      <t id="2011">%s이(가) %s에서 다른 %s와(과) 연결하도록 선택되었습니다</t>
+      <t id="2012">%s이(가) %s에서 선택 해제되었습니다</t>
+      <t id="2021">%s이(가) %s에서 %s(%s)와(과) 연결되었습니다</t>
+      <t id="2031">%s이(가) %s에서 %s(%s)와(과)의 연결이 해제되었습니다</t>
+    </page>
+  </add>
+</diff>

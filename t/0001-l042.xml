@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Czech -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">Správce bran</t>
+      <t id="1011">Vybrat %s pro připojení</t>
+      <t id="1012">Zrušit výběr %s</t>
+      <t id="1021">Připojit %s k %s</t>
+      <t id="1022">Připojit k vybranému</t>
+      <t id="1031">Odpojit</t>
+      <t id="2001">%s v %s byl postaven</t>
+      <t id="2002">%s v %s byl zničen</t>
+      <t id="2011">%s v %s byl vybrán pro připojení k jinému %s</t>
+      <t id="2012">%s v %s byl odebrán z výběru</t>
+      <t id="2021">%s v %s byl připojen k %s v %s</t>
+      <t id="2031">%s v %s byl odpojen od %s v %s</t>
+    </page>
+  </add>
+</diff>

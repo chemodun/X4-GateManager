@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- German -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">Tor-Manager</t>
+      <t id="1011">Wähle %s zum Verbinden aus</t>
+      <t id="1012">Auswahl von %s aufheben</t>
+      <t id="1021">Verbinde %s mit %s</t>
+      <t id="1022">Mit Ausgewähltem verbinden</t>
+      <t id="1031">Verbindung trennen</t>
+      <t id="2001">%s in %s wurde gebaut</t>
+      <t id="2002">%s in %s wurde zerstört</t>
+      <t id="2011">%s in %s wurde ausgewählt, um mit anderen %s verbunden zu werden</t>
+      <t id="2012">%s in %s wurde abgewählt</t>
+      <t id="2021">%s in %s wurde mit %s in %s verbunden</t>
+      <t id="2031">%s in %s wurde von %s in %s getrennt</t>
+    </page>
+  </add>
+</diff>

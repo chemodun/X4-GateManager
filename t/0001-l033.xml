@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- France -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gestionnaire de portails" descr="Texte pour le Gestionnaire de portails">
+      <t id="1">Gestionnaire de portails</t>
+      <t id="1011">Sélectionner %s à connecter</t>
+      <t id="1012">Désélectionner %s</t>
+      <t id="1021">Connecter %s à %s</t>
+      <t id="1022">Connecter à l'élément sélectionné</t>
+      <t id="1031">Déconnecter</t>
+      <t id="2001">%s dans %s a été construit</t>
+      <t id="2002">%s dans %s a été détruit</t>
+      <t id="2011">%s dans %s a été sélectionné pour être connecté à d'autres %s</t>
+      <t id="2012">%s dans %s a été désélectionné</t>
+      <t id="2021">%s dans %s a été connecté à %s dans %s</t>
+      <t id="2031">%s dans %s a été déconnecté de %s dans %s</t>
+    </page>
+  </add>
+</diff>

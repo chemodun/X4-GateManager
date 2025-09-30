@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chinese -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">星门管理器</t>
+      <t id="1011">选择要连接的%s</t>
+      <t id="1012">取消选择%s</t>
+      <t id="1021">将%s连接到%s</t>
+      <t id="1022">连接到已选项</t>
+      <t id="1031">断开连接</t>
+      <t id="2001">%s（位于%s）已建成</t>
+      <t id="2002">%s（位于%s）已被摧毁</t>
+      <t id="2011">%s（位于%s）已被选中，以与其他%s连接</t>
+      <t id="2012">%s（位于%s）已取消选择</t>
+      <t id="2021">%s（位于%s）已连接到%s（位于%s）</t>
+      <t id="2031">%s（位于%s）已与%s（位于%s）断开连接</t>
+    </page>
+  </add>
+</diff>

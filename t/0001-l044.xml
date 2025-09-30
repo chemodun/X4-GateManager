@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">Gate Manager</t>
+      <t id="1011">Select %s to Connect</t>
+      <t id="1012">Deselect %s</t>
+      <t id="1021">Connect %s to %s</t>
+      <t id="1022">Connect to Selected</t>
+      <t id="1031">Disconnect</t>
+      <t id="2001">%s in %s has been built</t>
+      <t id="2002">%s in %s has been destroyed</t>
+      <t id="2011">%s in %s has been selected to connect with other %s</t>
+      <t id="2012">%s in %s has been deselected</t>
+      <t id="2021">%s in %s has been connected to %s in %s</t>
+      <t id="2031">%s in %s has been disconnected from %s in %s</t>
+    </page>
+  </add>
+</diff>

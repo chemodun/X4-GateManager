@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spain -->
+<diff>
+  <add sel="/language">
+    <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
+      <t id="1">Gestor de Portales</t>
+      <t id="1011">Seleccionar %s para conectar</t>
+      <t id="1012">Deseleccionar %s</t>
+      <t id="1021">Conectar %s con %s</t>
+      <t id="1022">Conectar con lo seleccionado</t>
+      <t id="1031">Desconectar</t>
+      <t id="2001">%s en %s se ha construido</t>
+      <t id="2002">%s en %s se ha destruido</t>
+      <t id="2011">%s en %s se ha seleccionado para conectarse con otros %s</t>
+      <t id="2012">%s en %s se ha deseleccionado</t>
+      <t id="2021">%s en %s se ha conectado con %s en %s</t>
+      <t id="2031">%s en %s se ha desconectado de %s en %s</t>
+    </page>
+  </add>
+</diff>
