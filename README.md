@@ -142,7 +142,7 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 ## Acknowledgements
 
 - [EGOSOFT](https://www.egosoft.com) - for the game itself (In fact - for the series of games)!
-- Enormous big thank to [Forleyor](https://github.com/Forleyor), for his help with Lua! For make me curious about it and for his patience! Without him I will never start to make this mod!
+- Enormous big thank to [Forleyor](https://github.com/Forleyor), for his help with Lua! For make me curious about it and for his patience! Without him I will never touched the Lua and started to make this mod!
 - Thanks to all members of the [X4 modding channel](https://discord.com/channels/337098290917146624/502057640877228042) on [Egosoft Discord](https://discord.com/invite/zhs8sRpd3m).
 - Thanks to [SirNukes](https://next.nexusmods.com/profile/sirnukes?gameId=2659) for his awesome `Mod Support APIs` without which this mod would not be possible!
 
