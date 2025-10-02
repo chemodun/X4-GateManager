@@ -79,26 +79,35 @@
             $active  = false
           ]" />
         <do_if value="$params.$object.isclass.{class.sector} and $params.$offset?">
-          <set_value name="$text" exact="'Create Gate'" />
           <set_value name="$offset" exact="$params.$offset" />
+          <set_value name="$text" exact="'%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 701}, $offset.x, $offset.y, $offset.z]" />
+          <set_value name="$active" exact="player.money gt @player.entity.$gateManagerCosts.$gateBuild" />
+          <do_if value="not $active">
+            <set_value name="$text" exact="'%s %s. %s'.[{1001, 7833}, {20001, 701}, {1015, 28}]" />
+          </do_if>
           <signal_cue_instantly
             cue="md.Interact_Menu_API.Add_Action"
             param="table[
               $id       = 'player_gate_manager_build_gate',
               $section  = 'interaction',
-              $text     = '%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 701}, $offset.x, $offset.y, $offset.z],
+              $text     = $text,
               $icon     = 'poi_gate_active',
-              $active   = player.money gt @player.entity.$gateManagerCosts.$gateBuild,
+              $active   = $active,
               $callback = On_Create_Gate,
             ]" />
+          <set_value name="$text" exact="'%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 1001}, $offset.x, $offset.y, $offset.z]" />
+          <set_value name="$active" exact="player.money gt @player.entity.$gateManagerCosts.$acceleratorBuild" />
+          <do_if value="not $active">
+            <set_value name="$text" exact="'%s %s. %s'.[{1001, 7833}, {20001, 1001}, {1015, 28}]" />
+          </do_if>
           <signal_cue_instantly
             cue="md.Interact_Menu_API.Add_Action"
             param="table[
               $id       = 'player_gate_manager_create_accelerator',
               $section  = 'interaction',
-              $text     = '%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 1001}, $offset.x, $offset.y, $offset.z],
+              $text     = $text,
               $icon     = 'poi_gate_active',
-              $active   = player.money gt @player.entity.$gateManagerCosts.$acceleratorBuild,
+              $active   = $active,
               $callback = On_Create_Gate,
             ]" />
         </do_if>
@@ -131,12 +140,14 @@
             ]" />
           <do_if value="$currentGate.exit? and $currentGate.exit != null">
             <set_value name="$active" exact="true" />
+            <set_value name="$text" exact="{1972092407, 1031}" />
             <do_if
               value="$currentGateType == 'gate'
                 and player.money lt @player.entity.$gateManagerCosts.$gateDisconnect
                 or $currentGateType == 'accelerator'
                 and player.money lt @player.entity.$gateManagerCosts.$acceleratorDisconnect">
               <set_value name="$active" exact="false" />
+              <set_value name="$text" exact="'%s. %s'.[{1972092407, 1031}, {1015, 28}]" />
             </do_if>
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
@@ -153,6 +164,7 @@
             <set_value name="$text" exact="{1972092407, 1011}.[$currentGateName]" />
             <set_value name="$pendingGate" exact="@player.entity.$gateManagerPending" />
             <set_value name="$icon" exact="'poi_gate_active'" />
+            <set_value name="$active" exact="true" />
             <do_if value="$pendingGate? and $pendingGate != null">
               <run_actions ref="Get_Gate_Type" result="$pendingGateType">
                 <param name="gate" value="@$pendingGate" />
@@ -164,19 +176,17 @@
                 <set_value name="$icon" exact="'poi_gate_select'" />
                 <set_value name="$text"
                   exact="if $pendingGate.sector.name? then {1972092407, 1021}.[$currentGate.sector.name, $pendingGate.sector.name] else {1972092407, 1022}" />
+                <set_value name="$active" exact="@$pendingGate.sector != @$currentGate.sector and @$pendingGateType == @$currentGateType" />
+                <set_value name="$enoughMoney"
+                  exact="$currentGateType == 'gate'
+                  and player.money ge @player.entity.$gateManagerCosts.$gateConnect
+                  or $currentGateType == 'accelerator'
+                  and player.money ge @player.entity.$gateManagerCosts.$acceleratorConnect" />
+                <do_if value="not $enoughMoney">
+                  <set_value name="$active" exact="false" />
+                  <set_value name="$text" exact="'%s. %s'.[{1972092407, 1022}, {1015, 28}]" />
+                </do_if>
               </do_else>
-            </do_if>
-            <set_value name="$active"
-              exact="@$pendingGate == null or @$pendingGate == @$currentGate or (@$pendingGate.sector != @$currentGate.sector and @$pendingGateType == @$currentGateType)" />
-            <do_if
-              value="$active and
-                (
-                  and $currentGateType == 'gate'
-                  and player.money lt @player.entity.$gateManagerCosts.$gateConnect
-                  and $currentGateType == 'accelerator'
-                  and player.money lt @player.entity.$gateManagerCosts.$acceleratorConnect
-                )">
-              <set_value name="$active" exact="false" />
             </do_if>
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
