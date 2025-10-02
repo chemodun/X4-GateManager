@@ -13,23 +13,50 @@
           </conditions>
           <actions>
             <set_value name="player.entity.$gateManagerPending" exact="null" />
+            <set_value name="player.entity.$gateManagerCosts" exact="null" />
+            <include_actions ref="Init_Variables" />
           </actions>
         </cue>
-
-
+        <cue name="On_Game_Loaded" namespace="this">
+          <conditions>
+            <event_game_loaded />
+          </conditions>
+          <actions>
+            <set_value name="player.entity.$gateManagerPending" exact="null" />
+            <include_actions ref="Init_Variables" />
+          </actions>
+        </cue>
       </cues>
     </cue>
+
+    <library name="Init_Variables">
+      <actions>
+        <do_if value="not player.entity.$gateManagerCosts.$gateBuild?">
+          <set_value name="player.entity.$gateManagerCosts"
+            exact="table[$gateBuild = 0L, $gateConnect = 0L, $gateDisconnect = 0L, $acceleratorBuild = 0L, $acceleratorConnect = 0L, $acceleratorDisconnect = 0L]" />
+        </do_if>
+        <do_if value="not player.entity.$gateManagerGateMacro?">
+          <set_value name="player.entity.$gateManagerGateMacro" exact="'props_gates_anc_gate_macro'" />
+        </do_if>
+        <do_if value="not player.entity.$gateManagerAcceleratorMacro?">
+          <set_value name="player.entity.$gateManagerAcceleratorMacro" exact="'props_gates_orb_accelerator_01_macro'" />
+        </do_if>
+        <debug_text
+          text="'Gate Manager: Initialized variables. Costs: %s, Gate Macro: %s, Accelerator Macro: %s'.[player.entity.$gateManagerCosts, player.entity.$gateManagerGateMacro, player.entity.$gateManagerAcceleratorMacro]"
+          chance="100" filter="scripts" />
+      </actions>
+    </library>
 
     <cue name="Add_Menu_Actions" instantiate="true">
       <conditions>
         <event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
-        <debug_text text="'Gate Manager: Get_Actions invoked with param: %s'.[event.param]" chance="100" filter="general" />
-        <debug_text text="'Gate Manager: Get_Actions invoked with object: %s'.[@event.param.$object]" chance="100" filter="general" />
+        <debug_text text="'Gate Manager: Get_Actions invoked with param: %s'.[event.param]" chance="100" filter="scripts" />
+        <debug_text text="'Gate Manager: Get_Actions invoked with object: %s'.[@event.param.$object]" chance="100" filter="scripts" />
         <check_value value="player.holomap.isopen" />
         <check_value value="event.param.$object? and @event.param.$object != null" />
         <check_any>
           <debug_text text="'Gate Manager: Get_Actions invoked with object.class: %s'.[@event.param.$object.class]" chance="100"
-            filter="general" />
+            filter="scripts" />
           <check_all>
             <check_value value="@event.param.$object.isclass.{class.sector}" />
             <check_value value="@event.param.$offsetcomponent == @event.param.$object" />
@@ -77,13 +104,13 @@
           <set_value name="$currentGate" exact="$params.$object" />
           <debug_text
             text="'Gate Manager: Get_Actions invoked with currentGate: %s, Owner Id: %s, Macro: %s, Pending: %s'.[@$currentGate, @$currentGate.owner.id, @$currentGate.macro, @player.entity.$gateManagerPending]"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
           <run_actions ref="Get_Gate_Type" result="$currentGateType">
             <param name="gate" value="@$currentGate" />
           </run_actions>
           <set_value name="$currentGateName" exact="@$currentGate.name" />
           <debug_text text="'Gate Manager: currentGateType resolved from Macro %s: %s'.[@$currentGate.macro, @$currentGateType]"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
           <set_value name="$currentGateTargetSector" exact="if $currentGate.exit.sector.name? then $currentGate.exit.sector.name else ''" />
           <set_value name="$currentGateOffset" exact="$currentGate.relativeposition.{$currentGate.sector}" />
           <signal_cue_instantly
@@ -158,12 +185,12 @@
         <event_cue_signalled />
       </conditions>
       <actions>
-        <debug_text text="'Gate Manager: On_Create_Gate invoked with param: %s'.[event.param]" chance="100" filter="general" />
+        <debug_text text="'Gate Manager: On_Create_Gate invoked with param: %s'.[event.param]" chance="100" filter="scripts" />
         <set_value name="$sector" exact="event.param.$object" />
         <do_if
           value="not $sector? or not $sector.isclass.{class.sector}">
           <debug_text text="'Gate Manager: unable to resolve sector context.'"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
         </do_if>
         <do_else>
           <set_value name="$offset" exact="event.param.$offset" />
@@ -187,7 +214,7 @@
 
           <debug_text
             text="'Gate Manager:Sending %s with args: %s'.[$args.$command, $args]"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
 
           <do_if value="not player.entity.$gateManagerArgs?">
             <set_value name="player.entity.$gateManagerArgs" exact="[]" />
@@ -204,23 +231,23 @@
         <event_cue_signalled />
       </conditions>
       <actions>
-        <debug_text text="'Gate Manager: On_Destroy_Gate invoked with param: %s'.[event.param]" chance="100" filter="general" />
+        <debug_text text="'Gate Manager: On_Destroy_Gate invoked with param: %s'.[event.param]" chance="100" filter="scripts" />
         <set_value name="$gate" exact="event.param.$object" />
         <do_if value="@$gate == null or not @$gate.isclass.{class.gate}">
           <debug_text text="'Gate Manager: destroy invoked without gate reference.'"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
         </do_if>
         <do_else>
           <do_if value="@player.entity.$gateManagerPending == @$gate">
             <set_value name="player.entity.$gateManagerPending" exact="null" />
             <debug_text text="'Gate Manager: cancelled pending gate link.'"
               chance="100"
-              filter="general" />
+              filter="scripts" />
           </do_if>
           <set_value name="$gateName" exact="if $gate.name? then $gate.name else ''" />
           <set_value name="$gateSector" exact="@gate.sector.clone" />
           <set_value name="$gateSectorName" exact="if gateSector.name? then gateSector.name else ''" />
-          <debug_text text="'Gate Manager: destroying gate %s in sector %s'.[@$gateName, @$gateSector.name]" chance="100" filter="general" />
+          <debug_text text="'Gate Manager: destroying gate %s in sector %s'.[@$gateName, @$gateSector.name]" chance="100" filter="scripts" />
           <destroy_object object="$gate" explosion="false" />
           <run_actions ref="Notify_On_Finish">
             <param name="info" value="{1972092407, 2002}.[@$gateName, @$gateSectorName]" />
@@ -240,14 +267,14 @@
         <event_cue_signalled />
       </conditions>
       <actions>
-        <debug_text text="'Gate Manager: On_Connect_Gates invoked with param: %s'.[event.param]" chance="100" filter="general" />
+        <debug_text text="'Gate Manager: On_Connect_Gates invoked with param: %s'.[event.param]" chance="100" filter="scripts" />
         <set_value name="$current" exact="event.param.$object" />
         <set_value name="$args" exact="null" />
         <do_if value="$current? and @$current != null">
           <do_if value="@player.entity.$gateManagerPending == null">
             <set_value name="player.entity.$gateManagerPending" exact="$current" />
             <debug_text
-              text="'Gate Manager: gate selected for Connection.'" chance="100" filter="general" />
+              text="'Gate Manager: gate selected for Connection.'" chance="100" filter="scripts" />
             <set_value name="$args"
               exact="table[
                       $command = 'mark_gate',
@@ -258,7 +285,7 @@
             <set_value name="$source" exact="player.entity.$gateManagerPending" />
             <do_if value="@$source == @$current">
               <set_value name="player.entity.$gateManagerPending" exact="null" />
-              <debug_text text="'Gate Manager: cancelled pending gate link.'" chance="100" filter="general" />
+              <debug_text text="'Gate Manager: cancelled pending gate link.'" chance="100" filter="scripts" />
               <set_value name="$args"
                 exact="table[
                       $command = 'unmark_gate',
@@ -282,7 +309,7 @@
         <do_if value="$args? and @$args != null">
           <debug_text
             text="'Gate Manager:Sending %s with args: %s'.[$args.$command, $args]"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
           <do_if value="not player.entity.$gateManagerArgs?">
             <set_value name="player.entity.$gateManagerArgs" exact="[]" />
           </do_if>
@@ -299,12 +326,12 @@
         <event_cue_signalled />
       </conditions>
       <actions>
-        <debug_text text="'Gate Manager: On_Disconnect_Gate invoked with param: %s'.[event.param]" chance="100" filter="general" />
+        <debug_text text="'Gate Manager: On_Disconnect_Gate invoked with param: %s'.[event.param]" chance="100" filter="scripts" />
         <set_value name="$gate" exact="event.param.$object" />
 
         <do_if value="not $gate?">
           <debug_text text="'Gate Manager: disconnect invoked without gate reference.'"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
         </do_if>
         <do_else>
           <set_value name="$paired"
@@ -322,7 +349,7 @@
 
           <debug_text
             text="'Gate Manager: Sending %s with args: %s'.[$args.$command, $args]"
-            chance="100" filter="general" />
+            chance="100" filter="scripts" />
           <append_to_list name="player.entity.$gateManagerArgs" exact="$args" />
           <raise_lua_event name="'GateManager.HandleCommand'" />
         </do_else>
@@ -336,14 +363,14 @@
       <actions>
         <debug_text
           text="'Gate Manager: Capture_Results invoked with data in $gateManagerResult: %s'.[player.entity.$gateManagerResult]"
-          chance="100" filter="general" />
+          chance="100" filter="scripts" />
         <set_value name="$result" exact="player.entity.$gateManagerResult" />
         <do_if value="$result? and @$result != null">
           <do_if value="@$result.$result == 'success'">
-            <debug_text text="'Gate Manager: last command %s succeeded: %s'.[@$result.$command, $result]" chance="100" filter="general" />
+            <debug_text text="'Gate Manager: last command %s succeeded: %s'.[@$result.$command, $result]" chance="100" filter="scripts" />
             <do_if value="@$result.$command == 'build_gate' and @$result.$gate != null">
               <debug_text text="'Gate Manager: has been built gate %s (%s)'.[@$result.$gate.name, @$result.$gate.debugname]" chance="100"
-                filter="general" />
+                filter="scripts" />
               <run_actions ref="Notify_On_Finish">
                 <param name="info" value="{1972092407, 2001}.[@$result.$gate.name, @$result.$sector.name]" />
                 <param name="object" value="if @$result.$gate == null then @$result.$sector else @$result.$gate" />
@@ -351,7 +378,7 @@
             </do_if>
             <do_elseif value="@$result.$command == 'mark_gate' and @$result.$gate != null">
               <debug_text text="'Gate Manager: marked gate %s (%s) for connection.'.[@$result.$gate.name, @$result.$gate.debugname]"
-                chance="100" filter="general" />
+                chance="100" filter="scripts" />
               <run_actions ref="Get_Gate_Type_Text" result="$gateTypeText">
                 <param name="gate" value="@$result.$gate" />
               </run_actions>
@@ -362,7 +389,7 @@
             </do_elseif>
             <do_elseif value="@$result.$command == 'unmark_gate' and @$result.$gate != null">
               <debug_text text="'Gate Manager: unmarked gate %s (%s) for connection.'.[@$result.$gate.name, @$result.$gate.debugname]"
-                chance="100" filter="general" />
+                chance="100" filter="scripts" />
               <run_actions ref="Notify_On_Finish">
                 <param name="info" value="{1972092407, 2012}.[@$result.$gate.name, @$result.$gate.sector.name]" />
                 <param name="object" value="@$result.$gate" />
@@ -371,7 +398,7 @@
             <do_elseif value="@$result.$command == 'connect_gates'">
               <debug_text text="'Gate Manager: connected gates: %s and %s'.[@$result.$gateSource.sector, @$result.$gateTarget.sector]"
                 chance="100"
-                filter="general" />
+                filter="scripts" />
               <set_value name="player.entity.$gateManagerPending" exact="null" />
               <run_actions ref="Notify_On_Finish">
                 <param name="info"
@@ -382,7 +409,7 @@
             <do_elseif value="@$result.$command == 'disconnect_gates'">
               <debug_text text="'Gate Manager: disconnected gates: %s and %s'.[@$result.$gateSource.sector, @$result.$gateTarget.sector]"
                 chance="100"
-                filter="general" />
+                filter="scripts" />
               <set_value name="player.entity.$gateManagerPending" exact="null" />
               <run_actions ref="Notify_On_Finish">
                 <param name="info"
@@ -395,7 +422,7 @@
         <set_value name="player.entity.$gateManagerResult" exact="null" />
         <debug_text
           text="'Gate Manager: gateManagerResult: %s, gateManagerPending: %s'.[player.entity.$gateManagerResult, player.entity.$gateManagerPending]"
-          chance="100" filter="general" />
+          chance="100" filter="scripts" />
       </actions>
     </cue>
 
@@ -442,7 +469,7 @@
       </params>
       <actions>
         <debug_text text="'Gate Manager: Notify_On_Finish invoked with info: %s, object: %s, name: %s'.[@$info, @$object, @$object.name]" chance="100"
-          filter="general" />
+          filter="scripts" />
         <do_if value="$info? and @$info != '' ">
           <show_notification text="$info" timeout="15s" />
           <do_if value="$object? and @$object != null">
