@@ -81,7 +81,7 @@
         <do_if value="$params.$object.isclass.{class.sector} and $params.$offset?">
           <set_value name="$offset" exact="$params.$offset" />
           <set_value name="$text" exact="'%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 701}, $offset.x, $offset.y, $offset.z]" />
-          <set_value name="$active" exact="player.money gt @player.entity.$gateManagerCosts.$gateBuild" />
+          <set_value name="$active" exact="player.money gt (@player.entity.$gateManagerCosts.$gateBuild)Cr" />
           <do_if value="not $active">
             <set_value name="$text" exact="'%s %s. %s'.[{1001, 7833}, {20001, 701}, {1015, 28}]" />
           </do_if>
@@ -96,7 +96,7 @@
               $callback = On_Create_Gate,
             ]" />
           <set_value name="$text" exact="'%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 1001}, $offset.x, $offset.y, $offset.z]" />
-          <set_value name="$active" exact="player.money gt @player.entity.$gateManagerCosts.$acceleratorBuild" />
+          <set_value name="$active" exact="player.money gt (@player.entity.$gateManagerCosts.$acceleratorBuild)Cr" />
           <do_if value="not $active">
             <set_value name="$text" exact="'%s %s. %s'.[{1001, 7833}, {20001, 1001}, {1015, 28}]" />
           </do_if>
@@ -143,9 +143,9 @@
             <set_value name="$text" exact="{1972092407, 1031}" />
             <do_if
               value="$currentGateType == 'gate'
-                and player.money lt @player.entity.$gateManagerCosts.$gateDisconnect
+                and player.money lt (@player.entity.$gateManagerCosts.$gateDisconnect)Cr
                 or $currentGateType == 'accelerator'
-                and player.money lt @player.entity.$gateManagerCosts.$acceleratorDisconnect">
+                and player.money lt (@player.entity.$gateManagerCosts.$acceleratorDisconnect)Cr">
               <set_value name="$active" exact="false" />
               <set_value name="$text" exact="'%s. %s'.[{1972092407, 1031}, {1015, 28}]" />
             </do_if>
@@ -154,7 +154,7 @@
               param="table[
                 $id       = 'player_gate_manager_disconnect_gates',
                 $section  = 'interaction',
-                $text     = {1972092407, 1031},
+                $text     = $text,
                 $icon     = 'poi_gate_inactive',
                 $active   = $active,
                 $callback = On_Disconnect_Gate,
@@ -179,9 +179,9 @@
                 <set_value name="$active" exact="@$pendingGate.sector != @$currentGate.sector and @$pendingGateType == @$currentGateType" />
                 <set_value name="$enoughMoney"
                   exact="$currentGateType == 'gate'
-                  and player.money ge @player.entity.$gateManagerCosts.$gateConnect
+                  and player.money ge (@player.entity.$gateManagerCosts.$gateConnect)Cr
                   or $currentGateType == 'accelerator'
-                  and player.money ge @player.entity.$gateManagerCosts.$acceleratorConnect" />
+                  and player.money ge (@player.entity.$gateManagerCosts.$acceleratorConnect)Cr" />
                 <do_if value="not $enoughMoney">
                   <set_value name="$active" exact="false" />
                   <set_value name="$text" exact="'%s. %s'.[{1972092407, 1022}, {1015, 28}]" />
@@ -284,13 +284,17 @@
               filter="scripts" />
           </do_if>
           <set_value name="$gateName" exact="if $gate.name? then $gate.name else ''" />
-          <set_value name="$gateSector" exact="@gate.sector.clone" />
-          <set_value name="$gateSectorName" exact="if gateSector.name? then gateSector.name else ''" />
-          <debug_text text="'Gate Manager: destroying gate %s in sector %s'.[@$gateName, @$gateSector.name]" chance="100" filter="scripts" />
+          <set_value name="$gateSectorName" exact="if $gate.sector.name? then '%s'.[$gate.sector.name] else ''" />
+          <debug_text text="'Gate Manager: destroying gate %s in sector %s'.[@$gateName, @$gateSectorName]" chance="100" filter="scripts" />
           <destroy_object object="$gate" explosion="false" />
+          <run_actions ref="Get_Operation_Money" result="$money">
+            <param name="gate" value="@$gate" />
+            <param name="operation" value="'destroy'" />
+          </run_actions>
           <run_actions ref="Notify_On_Finish">
             <param name="info" value="{1972092407, 2002}.[@$gateName, @$gateSectorName]" />
             <param name="object" value="@$gateSector" />
+            <param name="money" value="$money" />
           </run_actions>
           <remove_value name="$gateSectorName" />
           <remove_value name="$gateSector" />
@@ -410,9 +414,14 @@
             <do_if value="@$result.$command == 'build_gate' and @$result.$gate != null">
               <debug_text text="'Gate Manager: has been built gate %s (%s)'.[@$result.$gate.name, @$result.$gate.debugname]" chance="100"
                 filter="scripts" />
+              <run_actions ref="Get_Operation_Money" result="$money">
+                <param name="gate" value="@$result.$gate" />
+                <param name="operation" value="'build'" />
+              </run_actions>
               <run_actions ref="Notify_On_Finish">
                 <param name="info" value="{1972092407, 2001}.[@$result.$gate.name, @$result.$sector.name]" />
                 <param name="object" value="if @$result.$gate == null then @$result.$sector else @$result.$gate" />
+                <param name="money" value="$money" />
               </run_actions>
             </do_if>
             <do_elseif value="@$result.$command == 'mark_gate' and @$result.$gate != null">
@@ -439,10 +448,15 @@
                 chance="100"
                 filter="scripts" />
               <set_value name="player.entity.$gateManagerPending" exact="null" />
+              <run_actions ref="Get_Operation_Money" result="$money">
+                <param name="gate" value="@$result.$gateSource" />
+                <param name="operation" value="'connect'" />
+              </run_actions>
               <run_actions ref="Notify_On_Finish">
                 <param name="info"
                   value="{1972092407, 2021}.[@$result.$gateSource.name, @$result.$gateSource.sector.name, @$result.$gateTarget.name, @$result.$gateTarget.sector.name]" />
                 <param name="object" value="@$result.$gateSource" />
+                <param name="money" value="$money" />
               </run_actions>
             </do_elseif>
             <do_elseif value="@$result.$command == 'disconnect_gates'">
@@ -450,10 +464,15 @@
                 chance="100"
                 filter="scripts" />
               <set_value name="player.entity.$gateManagerPending" exact="null" />
+              <run_actions ref="Get_Operation_Money" result="$money">
+                <param name="gate" value="@$result.$gateSource" />
+                <param name="operation" value="'disconnect'" />
+              </run_actions>
               <run_actions ref="Notify_On_Finish">
                 <param name="info"
                   value="{1972092407, 2031}.[@$result.$gateSource.name, @$result.$gateSource.sector.name, @$result.$gateTarget.name, @$result.$gateTarget.sector.name]" />
                 <param name="object" value="@$result.$gateSource" />
+                <param name="money" value="$money" />
               </run_actions>
             </do_elseif>
           </do_if>
@@ -501,21 +520,69 @@
       </actions>
     </library>
 
+    <library name="Get_Operation_Money" purpose="run_actions">
+      <params>
+        <param name="gate" />
+        <param name="operation" />
+      </params>
+      <actions>
+        <set_value name="$result" exact="0" />
+        <run_actions ref="Get_Gate_Type" result="$gateType">
+          <param name="gate" value="@$gate" />
+        </run_actions>
+        <do_if value="$gateType == 'gate' and $operation == 'build'">
+          <set_value name="$result" exact="-@player.entity.$gateManagerCosts.$gateBuild" />
+        </do_if>
+        <do_elseif value="$gateType == 'gate' and $operation == 'connect'">
+          <set_value name="$result" exact="-@player.entity.$gateManagerCosts.$gateConnect" />
+        </do_elseif>
+        <do_elseif value="$gateType == 'gate' and $operation == 'disconnect'">
+          <set_value name="$result" exact="-@player.entity.$gateManagerCosts.$gateDisconnect" />
+        </do_elseif>
+        <do_elseif value="$gateType == 'gate' and $operation == 'destroy'">
+          <set_value name="$result" exact="0.3 * @player.entity.$gateManagerCosts.$gateBuild" />
+        </do_elseif>
+        <do_elseif value="$gateType == 'accelerator' and $operation == 'build'">
+          <set_value name="$result" exact="-@player.entity.$gateManagerCosts.$acceleratorBuild" />
+        </do_elseif>
+        <do_elseif value="$gateType == 'accelerator' and $operation == 'connect'">
+          <set_value name="$result" exact="-@player.entity.$gateManagerCosts.$acceleratorConnect" />
+        </do_elseif>
+        <do_elseif value="$gateType == 'accelerator' and $operation == 'disconnect'">
+          <set_value name="$result" exact="-@player.entity.$gateManagerCosts.$acceleratorDisconnect" />
+        </do_elseif>
+        <do_elseif value="$gateType == 'accelerator' and $operation == 'destroy'">
+          <set_value name="$result" exact="0.3 * @player.entity.$gateManagerCosts.$acceleratorBuild" />
+        </do_elseif>
+        <reward_player money="($result)Cr" />
+        <return value="$result" />
+      </actions>
+    </library>
+
     <library name="Notify_On_Finish" purpose="run_actions">
       <params>
         <param name="info" />
         <param name="object" />
+        <param name="money" default="0" />
       </params>
       <actions>
         <debug_text text="'Gate Manager: Notify_On_Finish invoked with info: %s, object: %s, name: %s'.[@$info, @$object, @$object.name]" chance="100"
           filter="scripts" />
         <do_if value="$info? and @$info != '' ">
-          <show_notification text="$info" timeout="15s" />
+          <set_value name="$text" exact="$info" />
+          <!-- <do_if value="@$money != 0">
+            <substitute_text text="$moneyText" source="if @$money lt 0 then {1015, 7} else {1015, 8}">
+              <replace string="'$MONEY$'" with="'%,s'.[abs($money)]" />
+              <replace string="'$MONEY2$'" with="'%,s'.[player.money.formatted.default]" />
+            </substitute_text>
+            <set_value name="$text" exact="'%s\n%s'.[$text, $moneyText]" />
+          </do_if> -->
+          <show_notification text="'%s\n%s'.[{1972092407,1}, $text]" timeout="15s" />
           <do_if value="$object? and @$object != null">
-            <write_to_logbook category="general" title="{1972092407, 1}" text="$info" interaction="showonmap" object="$object" />
+            <write_to_logbook category="general" title="{1972092407, 1}" text="$text" interaction="showonmap" object="$object" money="($money)Cr" />
           </do_if>
           <do_else>
-            <write_to_logbook category="general" title="{1972092407, 1}" text="$info" />
+            <write_to_logbook category="general" title="{1972092407, 1}" text="$text" money="($money)Cr" />
           </do_else>
         </do_if>
       </actions>
