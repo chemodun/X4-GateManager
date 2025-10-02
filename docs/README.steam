@@ -150,6 +150,17 @@ Video demonstration of the Gate Manager. Full one
 [/list]
 [h2][b]Change Log[/b][/h2]
 
+[h2][1.10] - tbd[/h2]
+[list]
+[*] Added
+[list]
+[*] Options menu
+[/list]
+[*] Fixed
+[list]
+[*] Sector name wasn't shown for destroyed gate/accelerator in notification and logbook entries
+[/list]
+[/list]
 [h2][1.00] - 2025-10-01[/h2]
 [list]
 [*] Added
