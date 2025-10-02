@@ -148,6 +148,17 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 [/list]
 [size=130][u]Change Log[/u][/size]
 
+[size=125][u][1.10] - tbd[/u][/size]
+[list]
+[*] Added
+[list]
+[*] Options menu
+[/list]
+[*] Fixed
+[list]
+[*] Sector name wasn't shown for destroyed gate/accelerator in notification and logbook entries
+[/list]
+[/list]
 [size=125][u][1.00] - 2025-10-01[/u][/size]
 [list]
 [*] Added
