@@ -201,7 +201,7 @@ function GateManager.CreateGate(args)
   end
 
   local posRot = toPosRot(args.offset)
-  debugTrace(string.format("Spawning gate at x=%f, y=%f, z=%f, yaw=%f, pitch=%f, roll=%f", posRot.x, posRot.y,
+  debugTrace(string.format("Spawning gate with macro %s at x=%f, y=%f, z=%f, yaw=%f, pitch=%f, roll=%f", macro, posRot.x, posRot.y,
     posRot.z, posRot.yaw, posRot.pitch, posRot.roll))
   local object = C.SpawnObjectAtPos2(macro, sector, posRot, "ownerless")
 
