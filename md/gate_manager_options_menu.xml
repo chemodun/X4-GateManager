@@ -53,9 +53,9 @@
             <debug_text text="'Gate Manager Options: Opening Main Menu'" context="false" filter="scripts" />
             <include_actions ref="Ensure_Variables" />
             <signal_cue_instantly cue="md.Simple_Menu_API.Add_Submenu_Link"
-              param="table[$text = {1972092407, 3002}, $id = 'gate_manager_options_gate']" />
+              param="table[$text = '%s %s'.[{20001, 701}, {1001, 3405}], $id = 'gate_manager_options_gate']" />
             <signal_cue_instantly cue="md.Simple_Menu_API.Add_Submenu_Link"
-              param="table[$text = {1972092407, 3003}, $id = 'gate_manager_options_accelerator']" />
+              param="table[$text = '%s %s'.[{20001, 1001}, {1001, 3405}], $id = 'gate_manager_options_accelerator']" />
           </actions>
         </cue>
 
@@ -238,7 +238,7 @@
               param="table[
                 $col = 1,
                 $colSpan = 2,
-                $text = {1972092407, 3011},
+                $text = if $type == 'gate' then {20001, 701} else {20001, 1001}
               ]" />
             <set_value name="$macroOneSelected" exact="$macroCurrent == $macroOneValue" />
             <set_value name="$macroTwoSelected" exact="$macroCurrent == $macroTwoValue" />
