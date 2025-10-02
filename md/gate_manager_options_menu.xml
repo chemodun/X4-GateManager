@@ -7,8 +7,8 @@
       <cues>
         <library name="Ensure_Variables" purpose="include_actions">
           <actions>
-            <set_value name="$textGreen" exact="'Color.text_success'" />
-            <set_value name="$textGray" exact="'Color.text_inactive'" />
+            <set_value name="$textGreen" exact="'Color.button_content_default'" />
+            <set_value name="$textGray" exact="'Color.button_content_default_inverse'" />
             <include_actions ref="md.Gate_Manager_Interface.Init_Variables" />
           </actions>
         </library>
@@ -247,7 +247,7 @@
                 $col = 3,
                 $colSpan = 3,
                 $text = table[
-                  $text   = '%s'.[$macroOneValue],
+                  $text   = {20111, 5302},
                   $color  = if $macroOneSelected then $textSelected else $textUnselected,
                   $halign = 'center',
                 ],
@@ -263,7 +263,7 @@
                 $col = 6,
                 $colSpan = 3,
                 $text = table[
-                  $text   = '%s'.[$macroTwoValue],
+                  $text   = {20111, 5303},
                   $color  = if $macroTwoSelected then $textSelected else $textUnselected,
                   $halign = 'center',
                 ],
