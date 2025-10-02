@@ -88,6 +88,7 @@
               $section  = 'interaction',
               $text     = '%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 701}, $offset.x, $offset.y, $offset.z],
               $icon     = 'poi_gate_active',
+              $active   = player.money gt @player.entity.$gateManagerCosts.$gateBuild,
               $callback = On_Create_Gate,
             ]" />
           <signal_cue_instantly
@@ -97,6 +98,7 @@
               $section  = 'interaction',
               $text     = '%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 1001}, $offset.x, $offset.y, $offset.z],
               $icon     = 'poi_gate_active',
+              $active   = player.money gt @player.entity.$gateManagerCosts.$acceleratorBuild,
               $callback = On_Create_Gate,
             ]" />
         </do_if>
@@ -128,6 +130,14 @@
                 $active   = false,
             ]" />
           <do_if value="$currentGate.exit? and $currentGate.exit != null">
+            <set_value name="$active" exact="true" />
+            <do_if
+              value="$currentGateType == 'gate'
+                and player.money lt @player.entity.$gateManagerCosts.$gateDisconnect
+                or $currentGateType == 'accelerator'
+                and player.money lt @player.entity.$gateManagerCosts.$acceleratorDisconnect">
+              <set_value name="$active" exact="false" />
+            </do_if>
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
               param="table[
@@ -135,6 +145,7 @@
                 $section  = 'interaction',
                 $text     = {1972092407, 1031},
                 $icon     = 'poi_gate_inactive',
+                $active   = $active,
                 $callback = On_Disconnect_Gate,
               ]" />
           </do_if>
@@ -155,6 +166,18 @@
                   exact="if $pendingGate.sector.name? then {1972092407, 1021}.[$currentGate.sector.name, $pendingGate.sector.name] else {1972092407, 1022}" />
               </do_else>
             </do_if>
+            <set_value name="$active"
+              exact="@$pendingGate == null or @$pendingGate == @$currentGate or (@$pendingGate.sector != @$currentGate.sector and @$pendingGateType == @$currentGateType)" />
+            <do_if
+              value="$active and
+                (
+                  and $currentGateType == 'gate'
+                  and player.money lt @player.entity.$gateManagerCosts.$gateConnect
+                  and $currentGateType == 'accelerator'
+                  and player.money lt @player.entity.$gateManagerCosts.$acceleratorConnect
+                )">
+              <set_value name="$active" exact="false" />
+            </do_if>
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
               param="table[
@@ -163,7 +186,7 @@
                 $text     = $text,
                 $icon     = $icon,
                 $callback = On_Connect_Gates,
-                $active   = @$pendingGate == null or @$pendingGate == @$currentGate or (@$pendingGate.sector != @$currentGate.sector and @$pendingGateType == @$currentGateType),
+                $active   = $active,
               ]" />
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
@@ -203,13 +226,19 @@
                         $y     = $y,
                         $z     = $z,
                         ]" />
-
+          <set_value name="$macro" exact="if player.entity.$gateManagerGateMacro? then player.entity.$gateManagerGateMacro else 'props_gates_anc_gate_macro'" />
+          <do_if value="event.param.$id == 'player_gate_manager_create_accelerator'">
+            <set_value name="$macro"
+              exact="if player.entity.$gateManagerAcceleratorMacro? then player.entity.$gateManagerAcceleratorMacro else 'props_gates_orb_accelerator_01_macro'" />
+          </do_if>
+          <debug_text text="'Gate Manager: Creating gate in sector %s at offset (%,s; %,s; %,s) with macro %s'.[$sector.name, $x, $y, $z, $macro]"
+            chance="100" filter="scripts" />
           <set_value name="$args"
             exact="table[
                     $command = 'build_gate',
                     $sector  = $sector,
                     $offset  = $offsetTable,
-                    $macro   = if event.param.$id == 'player_gate_manager_build_gate' then 'props_gates_anc_gate_macro' else 'props_gates_orb_accelerator_01_macro',
+                    $macro   = $macro,
                     ]" />
 
           <debug_text
