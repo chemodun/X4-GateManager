@@ -15,6 +15,11 @@
       <t id="2012">%s in %s wurde abgewählt</t>
       <t id="2021">%s in %s wurde mit %s in %s verbunden</t>
       <t id="2031">%s in %s wurde von %s in %s getrennt</t>
+      <t id="3021">Baukosten</t>
+      <t id="3022">Verbindungskosten</t>
+      <t id="3023">Trennungskosten</t>
+      <t id="3031">Zehnermillionen (10.000.000)</t>
+      <t id="3032">Hundertmillionen (100.000.000)</t>
     </page>
   </add>
 </diff>

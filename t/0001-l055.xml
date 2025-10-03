@@ -15,6 +15,11 @@
       <t id="2012">%s em %s foi desselecionado</t>
       <t id="2021">%s em %s foi conectado a %s em %s</t>
       <t id="2031">%s em %s foi desconectado de %s em %s</t>
+      <t id="3021">Custo de construção</t>
+      <t id="3022">Custo de conexão</t>
+      <t id="3023">Custo de desconexão</t>
+      <t id="3031">Dezenas de milhões (10.000.000)</t>
+      <t id="3032">Centenas de milhões (100.000.000)</t>
     </page>
   </add>
 </diff>

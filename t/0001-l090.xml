@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Turkey -->
+<!-- Turkish -->
 <diff>
   <add sel="/language">
     <page id="1972092407" voice="no" title="Gate Manager" descr="Text for Gate Manager">
@@ -15,6 +15,11 @@
       <t id="2012">%s (%s) seçimi kaldırıldı</t>
       <t id="2021">%s (%s) ile %s (%s) arasında bağlantı kuruldu</t>
       <t id="2031">%s (%s) ile %s (%s) arasındaki bağlantı kesildi</t>
+      <t id="3021">İnşa maliyeti</t>
+      <t id="3022">Bağlantı maliyeti</t>
+      <t id="3023">Bağlantı kesme maliyeti</t>
+      <t id="3031">On milyonlar (10.000.000)</t>
+      <t id="3032">Yüz milyonlar (100.000.000)</t>
     </page>
   </add>
 </diff>

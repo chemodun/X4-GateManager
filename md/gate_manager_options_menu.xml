@@ -24,14 +24,14 @@
               param="table[
                 $id      = 'gate_manager_options_menu',
                 $columns = 8,
-                $title   = {1972092407, 3001},
+                $title   = {1972092407, 1},
                 $onOpen  = Main_Menu,
               ]" />
             <signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu"
               param="table[
                 $id      = 'gate_manager_options_gate',
                 $columns = 8,
-                $title   = {1972092407, 3002},
+                $title   = '%s %s'.[{20001, 701}, {1001, 3405}],
                 $onOpen  = Gate_Options_Menu,
                 $private = 1,
               ]" />
@@ -39,7 +39,7 @@
               param="table[
                 $id      = 'gate_manager_options_accelerator',
                 $columns = 8,
-                $title   = {1972092407, 3003},
+                $title   = '%s %s'.[{20001, 1001}, {1001, 3405}],
                 $onOpen  = Accelerator_Options_Menu,
                 $private = 1,
               ]" />
@@ -343,7 +343,7 @@
               param="table[
                 $col = 1,
                 $colSpan = 3,
-                $text = '  Tens of millions (10,000,000)',
+                $text = '  %s'.[{1972092407, 3031}]
               ]" />
             <signal_cue_instantly cue="md.Simple_Menu_API.Make_Slider"
               param="table[
@@ -371,7 +371,7 @@
               param="table[
                 $col = 1,
                 $colSpan = 3,
-                $text = '  Hundreds of millions (100,000,000)',
+                $text = '  %s'.[{1972092407, 3032}]
               ]" />
 
             <signal_cue_instantly cue="md.Simple_Menu_API.Make_Slider"

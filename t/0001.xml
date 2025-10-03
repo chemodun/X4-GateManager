@@ -14,13 +14,11 @@
       <t id="2012">%s in %s has been deselected</t>
       <t id="2021">%s in %s has been connected to %s in %s</t>
       <t id="2031">%s in %s has been disconnected from %s in %s</t>
-      <t id="3001">Gate Manager Options</t>
-      <t id="3002">Gate Options</t>
-      <t id="3003">Accelerator Options</t>
-      <t id="3011">Macro</t>
       <t id="3021">Build Cost</t>
       <t id="3022">Connect Cost</t>
       <t id="3023">Disconnect Cost</t>
+      <t id="3031">Tens of millions (10,000,000)</t>
+      <t id="3032">Hundreds of millions (100,000,000)</t>
     </page>
   </add>
 </diff>
