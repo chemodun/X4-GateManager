@@ -12,9 +12,10 @@ Compatible with `X4: Foundations 7.60` and upper. At least it written and tested
 - Connect Jump Gates and Accelerators to create travel routes (is only possible to connect Gates to Gates or Accelerators to Accelerators)
 - Disconnect Jump Gates and Accelerators (player-built ones as well as original ones)
 - Destroy unwanted Jump Gates and Accelerators (only player-built ones)
-- You can choose the type of the object to build (as for Jump Gate as for Accelerator)
-- You can define a costs for building, connecting, disconnecting the objects
+- From version `1.10` you can choose the type of the object to build (as for Jump Gate as for Accelerator)
+- From version `1.10` you can define a costs for building, connecting, disconnecting the objects (if set to `0`, the action will be free of charge)
 - If costs for the building is defined then the destruction will return 30% of the building costs
+- All versions above `1.10` of the mod will have no possibility to make the actions free of charge
 
 ## Download
 
