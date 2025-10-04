@@ -236,8 +236,8 @@
                 $col = 4,
                 $colSpan = 5,
                 $options = [
-                  table[$text = {20111, 5302}, $type  = $type, $value = $macroOneValue],
-                  table[$text = {20111, 5303}, $type  = $type, $value = $macroTwoValue],
+                  table[$text = '%s %s'.[{1001, 6400}, {20303, 1100}], $type  = $type, $value = $macroOneValue],
+                  table[$text = '%s %s'.[{1001, 6400}, {20303, 1101}], $type  = $type, $value = $macroTwoValue],
                 ],
                 $startOption = if $macroCurrent == $macroTwoValue then 2 else 1,
                 $onDropDownConfirmed = Execute_SetMacro,
