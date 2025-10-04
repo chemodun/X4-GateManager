@@ -126,6 +126,9 @@
           <run_actions ref="Get_Gate_Type" result="$currentGateType">
             <param name="gate" value="@$currentGate" />
           </run_actions>
+          <run_actions ref="Get_Gate_Type_Text" result="$gateTypeText">
+            <param name="gate" value="@$currentGate" />
+          </run_actions>
           <set_value name="$currentGateName" exact="@$currentGate.name" />
           <debug_text text="'Gate Manager: currentGateType resolved from Macro %s: %s'.[@$currentGate.macro, @$currentGateType]"
             chance="100" filter="scripts" />
@@ -150,14 +153,14 @@
             ]" />
           <do_if value="$currentGate.exit? and $currentGate.exit != null">
             <set_value name="$active" exact="true" />
-            <set_value name="$text" exact="{1972092407, 1031}" />
+            <set_value name="$text" exact="'%s %s'.[{1972092407, 1031}, $gateTypeText]" />
             <do_if
               value="$currentGateType == 'gate'
                 and player.money lt (@player.entity.$gateManagerCosts.$gateDisconnect)Cr
                 or $currentGateType == 'accelerator'
                 and player.money lt (@player.entity.$gateManagerCosts.$acceleratorDisconnect)Cr">
               <set_value name="$active" exact="false" />
-              <set_value name="$text" exact="'%s. %s'.[{1972092407, 1031}, {1015, 28}]" />
+              <set_value name="$text" exact="'%s. %s'.[$text, {1015, 28}]" />
             </do_if>
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
