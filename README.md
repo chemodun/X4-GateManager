@@ -12,7 +12,9 @@ Compatible with `X4: Foundations 7.60` and upper. At least it written and tested
 - Connect Jump Gates and Accelerators to create travel routes (is only possible to connect Gates to Gates or Accelerators to Accelerators)
 - Disconnect Jump Gates and Accelerators (player-built ones as well as original ones)
 - Destroy unwanted Jump Gates and Accelerators (only player-built ones)
-- For Gates used the `props_gates_anc_gate_macro` model, for Accelerators used the `props_gates_orb_accelerator_01_macro` model
+- You can choose the type of the object to build (as for Jump Gate as for Accelerator)
+- You can define a costs for building, connecting, disconnecting the objects
+- If costs for the building is defined then the destruction will return 30% of the building costs
 
 ## Download
 
@@ -36,8 +38,10 @@ After installation, you can use the context menu in the Galaxy Map view to build
 - Right-click in the sector on position where you want to build a Jump Gate or an Accelerator
 - Select the `Build Jump Gate` or `Build Accelerator` option from the context menu
 - The Jump Gate or Accelerator will be built in the selected sector exactly in the selected position.
+- If not enough money to build the object, the option will be disabled.
 
 ![Build Jump Gate or Accelerator](docs/images/context_menu_build.png)
+![Build Jump Gate or Accelerator. Insufficient Funds](docs/images/context_menu_build_insufficient_funds.png)
 
 By default, the Jump Gate or Accelerator will be oriented from "South" to "North". If you want to change the orientation, please read the appropriate section below.
 
@@ -52,6 +56,7 @@ Applicable as for newly built objects as well as for original ones.
 - Right-click on the Jump Gate or Accelerator you want to connect to
 - Select `Connect [Sector] to [Sector]` option from the context menu
 - Appropriate connection will be created between the two objects
+- If not enough money to connect the objects, the option will be disabled.
 
 #### Inactive object (not currently connected)
 
@@ -87,8 +92,10 @@ If you already marked some object as selected. to make possible to select anothe
 - Select `Disconnect` option from the context menu
 - The connection will be removed and the objects will be inactive
 - You can connect them again, or destroy (if it was a player-built one) them if you don't need them anymore
+- If not enough money to disconnect the object, the option will be disabled.
 
 ![Context menu on active object](docs/images/context_menu_on_active_object.png)
+![Context menu on active object. Insufficient Funds](docs/images/context_menu_on_active_object_insufficient_funds.png)
 
 ### Destroy
 
@@ -115,24 +122,54 @@ All of these is valid if you place the object in the closest border to opposite 
 
 To reset map orientation, please use the '.' hotkey to focus map on your current position. In this case orientation will be "South" to "North" for a whole map.
 
+### Mod Options
+
+You can change some options of the mod via the Options menu -> Extension Options -> Gate Manager.
+![Extension Options](docs/images/options_menu_extension_options.png)
+![Gate Manager Options](docs/images/extension_options_gate_manager_menu.png)
+
+Each type of the object (Jump Gate and Accelerator) has its own but typical set of options:
+
+- **Type to build** - type of the object to build. You can choose between `Type I` and `Type II`.
+- **Build cost** - cost to build the object. If set to `0`, the building will be free of charge.
+- **Connect cost** - cost to connect two objects. If set to `0`, the connection will be free of charge.
+- **Disconnect cost** - cost to disconnect the object. If set to `0`, the disconnection will be free of charge.
+
+Each `Cost` item contains a two sliders:
+
+- `Tens of millions` - from `0` to `9` (i.e. from `0 Cr.` to `90,000,000 Cr.`)
+- `Thousands of millions` - from `0` to `10` (i.e. from `0 Cr.` to `1,000,000,000 Cr.`)
+
+#### Jump Gate Options
+
+![Jump Gate Options Default](docs/images/gate_manager_menu_jump_gate_options.png)
+![Jump Gate Options Changed](docs/images/gate_manager_menu_jump_gate_options_changed.png)
+
+#### Accelerator Options
+
+![Accelerator Options Default](docs/images/gate_manager_menu_accelerator_options.png)
+![Accelerator Options Changed](docs/images/gate_manager_menu_accelerator_options_changed.png)
+
 ## Logging
 
 ### Notifications
 
 All your actions will be shown in notification window (not really useful in the Map view).
 
-![Notifications](docs/images/notifications.png)
+![Notifications. Example One](docs/images/notifications_with_cost_one.png)
+![Notifications. Example Two](docs/images/notifications_with_cost_two.png)
 
 ### Logbook
 
 In addition, all your actions will be logged in the logbook (accessible via the Player Information menu).
 
-![Logbook records](docs/images/logbook.png)
+![Logbook records](docs/images/logbook_with_cost.png)
 
 ## Video
 
 [Video demonstration of the Gate Manager. Short one](https://www.youtube.com/watch?v=bpB_Y5TShgw)
 [Video demonstration of the Gate Manager. Full one](https://www.youtube.com/watch?v=4TyMagNIVC0)
+[Video demonstration of the Gate Manager. Options menu, types and costs](https://www.youtube.com/watch?v=frNdHqFphHI)
 
 ## Credits
 
@@ -148,12 +185,15 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 
 ## Change Log
 
-### [1.10] - tbd
+### [1.10] - 2025-10-04
 
 - Added
-  - Options menu
+  - Options menu with:
+    - Type of the object to build (as for Jump Gate as for Accelerator)
+    - Costs for building, connecting, disconnecting the objects
 - Fixed
   - Sector name wasn't shown for destroyed gate/accelerator in notification and logbook entries
+  - Type of object not shown in `Disconnect` context menu entry
 
 ### [1.00] - 2025-10-01
 
