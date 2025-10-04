@@ -72,10 +72,11 @@
         <signal_cue_instantly
           cue="md.Interact_Menu_API.Add_Action"
           param="table[
-            $id       = 'player_gate_manager_gate_header',
-            $section  = 'interaction',
-            $text     = {1972092407, 1},
-            $active  = false
+            $id         = 'player_gate_manager_gate_header',
+            $section    = 'interaction',
+            $text       = {1972092407, 1},
+            $mouseover  = {1972092407, 1},
+            $active     = false
           ]" />
         <do_if value="$params.$object.isclass.{class.sector} and $params.$offset?">
           <set_value name="$offset" exact="$params.$offset" />
@@ -87,12 +88,14 @@
           <signal_cue_instantly
             cue="md.Interact_Menu_API.Add_Action"
             param="table[
-              $id       = 'player_gate_manager_build_gate',
-              $section  = 'interaction',
-              $text     = $text,
-              $icon     = 'poi_gate_active',
-              $active   = $active,
-              $callback = On_Create_Gate,
+              $id             = 'player_gate_manager_build_gate',
+              $section        = 'interaction',
+              $text           = $text,
+              $icon           = 'poi_gate_active',
+              $mouseover      = '%s: %s'.[{1972092407, 1}, $text],
+              $mouseover_icon = 'poi_gate_active',
+              $active         = $active,
+              $callback       = On_Create_Gate,
             ]" />
           <set_value name="$text" exact="'%s %s (%,s; %,s; %,s)'.[{1001, 7833}, {20001, 1001}, $offset.x, $offset.y, $offset.z]" />
           <set_value name="$active" exact="player.money gt (@player.entity.$gateManagerCosts.$acceleratorBuild)Cr" />
@@ -102,13 +105,18 @@
           <signal_cue_instantly
             cue="md.Interact_Menu_API.Add_Action"
             param="table[
-              $id       = 'player_gate_manager_create_accelerator',
-              $section  = 'interaction',
-              $text     = $text,
-              $icon     = 'poi_gate_active',
-              $active   = $active,
-              $callback = On_Create_Gate,
+              $id             = 'player_gate_manager_create_accelerator',
+              $section        = 'interaction',
+              $text           = $text,
+              $icon           = 'poi_gate_active',
+              $mouseover      = '%s: %s'.[{1972092407, 1}, $text],
+              $mouseover_icon = 'poi_gate_active',
+              $active         = $active,
+              $callback       = On_Create_Gate,
             ]" />
+          <remove_value name="$text" />
+          <remove_value name="$active" />
+          <remove_value name="$offset" />
         </do_if>
         <do_elseif value="$params.$object.isclass.{class.gate}">
           <set_value name="$currentGate" exact="$params.$object" />
@@ -123,19 +131,22 @@
             chance="100" filter="scripts" />
           <set_value name="$currentGateTargetSector" exact="if $currentGate.exit.sector.name? then $currentGate.exit.sector.name else ''" />
           <set_value name="$currentGateOffset" exact="$currentGate.relativeposition.{$currentGate.sector}" />
-          <signal_cue_instantly
-            cue="md.Interact_Menu_API.Add_Action"
-            param="table[
-              $id       = 'player_gate_manager_gate_info',
-              $section  = 'interaction',
-              $text     = '%s %s(%,s; %,s; %,s)'.[
+          <set_value name="$text"
+            exact="'%s %s(%,s; %,s; %,s)'.[
                 $currentGateName,
                 if $currentGateTargetSector != '' then '=&gt; %s '.[$currentGateTargetSector] else '',
                 $currentGateOffset.x,
                 $currentGateOffset.y,
                 $currentGateOffset.z,
-                ],
-                $active   = false,
+                ]" />
+          <signal_cue_instantly
+            cue="md.Interact_Menu_API.Add_Action"
+            param="table[
+              $id         = 'player_gate_manager_gate_info',
+              $section    = 'interaction',
+              $text       = $text,
+              $mouseover  = '%s: %s'.[{1972092407, 1}, $text],
+              $active     = false,
             ]" />
           <do_if value="$currentGate.exit? and $currentGate.exit != null">
             <set_value name="$active" exact="true" />
@@ -151,12 +162,14 @@
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
               param="table[
-                $id       = 'player_gate_manager_disconnect_gates',
-                $section  = 'interaction',
-                $text     = $text,
-                $icon     = 'poi_gate_inactive',
-                $active   = $active,
-                $callback = On_Disconnect_Gate,
+                $id             = 'player_gate_manager_disconnect_gates',
+                $section        = 'interaction',
+                $text           = $text,
+                $icon           = 'poi_gate_inactive',
+                $mouseover      = '%s: %s'.[{1972092407, 1}, $text],
+                $mouseover_icon = 'poi_gate_inactive',
+                $active         = $active,
+                $callback       = On_Disconnect_Gate,
               ]" />
           </do_if>
           <do_else>
@@ -190,24 +203,39 @@
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
               param="table[
-                $id       = 'player_gate_manager_connect_gates',
-                $section  = 'interaction',
-                $text     = $text,
-                $icon     = $icon,
-                $callback = On_Connect_Gates,
-                $active   = $active,
+                $id             = 'player_gate_manager_connect_gates',
+                $section        = 'interaction',
+                $text           = $text,
+                $icon           = $icon,
+                $mouseover      = '%s: %s'.[{1972092407, 1}, $text],
+                $mouseover_icon = $icon,
+                $callback       = On_Connect_Gates,
+                $active         = $active,
               ]" />
+            <set_value name="$text" exact="'%s %s'.[{1004, 3}, $currentGateName]" />
             <signal_cue_instantly
               cue="md.Interact_Menu_API.Add_Action"
               param="table[
-                $id       = 'player_gate_manager_destroy_gate',
-                $section  = 'interaction',
-                $text     = '%s %s'.[{1004, 3}, $currentGateName],
-                $icon     = 'poi_gate_inactive',
-                $callback = On_Destroy_Gate,
-                $active    = @$currentGate.owner == faction.ownerless,
+                $id             = 'player_gate_manager_destroy_gate',
+                $section        = 'interaction',
+                $text           = $text,
+                $icon           = 'poi_gate_inactive',
+                $mouseover      = '%s: %s'.[{1972092407, 1}, $text],
+                $mouseover_icon = 'poi_gate_inactive',
+                $callback       = On_Destroy_Gate,
+                $active         = @$currentGate.owner == faction.ownerless,
               ]" />
           </do_else>
+          <remove_value name="$text" />
+          <remove_value name="$active" />
+          <remove_value name="$currentGate" />
+          <remove_value name="$currentGateName" />
+          <remove_value name="$currentGateType" />
+          <remove_value name="$currentGateTargetSector" />
+          <remove_value name="$currentGateOffset" />
+          <remove_value name="$pendingGate" />
+          <remove_value name="$icon" />
+          <remove_value name="$enoughMoney" />
         </do_elseif>
       </actions>
     </cue>
