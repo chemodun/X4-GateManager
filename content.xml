@@ -2,7 +2,7 @@
 <content
   id="ws_3577926900"
   author="Chem O`Dun"
-  version="100"
+  version="110"
   date="2025-10-01"
   save="false"
   lastupdate="1759276208"
@@ -46,6 +46,6 @@
   <!-- Ukraine -->
   <text language="380"
     description="Додає дії контекстного меню карти для будівництва, з’єднання та знищення визначених гравцем стрибкових брам і прискорювачів."></text>
-  <dependency version="760"></dependency>
-  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"></dependency>
+  <dependency version="760" />
+  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" version="193" />
 </content>
