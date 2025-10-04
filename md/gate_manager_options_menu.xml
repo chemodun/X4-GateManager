@@ -7,8 +7,6 @@
       <cues>
         <library name="Ensure_Variables" purpose="include_actions">
           <actions>
-            <set_value name="$textGreen" exact="'Color.button_content_default'" />
-            <set_value name="$textGray" exact="'Color.button_content_default_inverse'" />
             <include_actions ref="md.Gate_Manager_Interface.Init_Variables" />
           </actions>
         </library>
@@ -73,8 +71,6 @@
               <param name="buildValue" value="player.entity.$gateManagerCosts.$gateBuild" />
               <param name="connectValue" value="player.entity.$gateManagerCosts.$gateConnect" />
               <param name="disconnectValue" value="player.entity.$gateManagerCosts.$gateDisconnect" />
-              <param name="textSelected" value="$textGreen" />
-              <param name="textUnselected" value="$textGray" />
             </run_actions>
           </actions>
         </cue>
@@ -93,8 +89,6 @@
               <param name="buildValue" value="player.entity.$gateManagerCosts.$acceleratorBuild" />
               <param name="connectValue" value="player.entity.$gateManagerCosts.$acceleratorConnect" />
               <param name="disconnectValue" value="player.entity.$gateManagerCosts.$acceleratorDisconnect" />
-              <param name="textSelected" value="$textGreen" />
-              <param name="textUnselected" value="$textGray" />
             </run_actions>
           </actions>
         </cue>
@@ -104,10 +98,9 @@
             <event_cue_signalled />
           </conditions>
           <actions>
-            <debug_text text="'Gate Manager Options: Executing SetMacro'" context="false" filter="scripts" />
-            <do_if value="event.param.$echo? and event.param.$echo.$type? and event.param.$echo.$value?">
-              <set_value name="$type" exact="event.param.$echo.$type" />
-              <set_value name="$value" exact="event.param.$echo.$value" />
+            <do_if value="event.param.$option? and event.param.$option.$type? and event.param.$option.$value?">
+              <set_value name="$type" exact="event.param.$option.$type" />
+              <set_value name="$value" exact="event.param.$option.$value" />
               <do_if value="$type == 'gate'">
                 <set_value name="player.entity.$gateManagerGateMacro" exact="$value" />
               </do_if>
@@ -226,8 +219,6 @@
             <param name="buildValue" />
             <param name="connectValue" />
             <param name="disconnectValue" />
-            <param name="textSelected" />
-            <param name="textUnselected" />
           </params>
           <actions>
             <debug_text text="'Gate Manager Options: Rendering Options Template'" context="false" filter="scripts" />
@@ -237,52 +228,26 @@
             <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text"
               param="table[
                 $col = 1,
-                $colSpan = 2,
+                $colSpan = 3,
                 $text = if $type == 'gate' then {20001, 701} else {20001, 1001}
               ]" />
-            <set_value name="$macroOneSelected" exact="$macroCurrent == $macroOneValue" />
-            <set_value name="$macroTwoSelected" exact="$macroCurrent == $macroTwoValue" />
-            <signal_cue_instantly cue="md.Simple_Menu_API.Make_Button"
+            <signal_cue_instantly cue="md.Simple_Menu_API.Make_Dropdown"
               param="table[
-                $col = 3,
-                $colSpan = 3,
-                $text = table[
-                  $text   = {20111, 5302},
-                  $color  = if $macroOneSelected then $textSelected else $textUnselected,
-                  $halign = 'center',
+                $col = 4,
+                $colSpan = 5,
+                $options = [
+                  table[$text = {20111, 5302}, $type  = $type, $value = $macroOneValue],
+                  table[$text = {20111, 5303}, $type  = $type, $value = $macroTwoValue],
                 ],
-                $onClick = Execute_SetMacro,
-                $onRightClick = Execute_SetMacro,
-                $echo = table[
-                  $type  = $type,
-                  $value = $macroOneValue,
-                ],
-              ]" />
-            <signal_cue_instantly cue="md.Simple_Menu_API.Make_Button"
-              param="table[
-                $col = 6,
-                $colSpan = 3,
-                $text = table[
-                  $text   = {20111, 5303},
-                  $color  = if $macroTwoSelected then $textSelected else $textUnselected,
-                  $halign = 'center',
-                ],
-                $onClick = Execute_SetMacro,
-                $onRightClick = Execute_SetMacro,
-                $echo = table[
-                  $type  = $type,
-                  $value = $macroTwoValue,
-                ],
+                $startOption = if $macroCurrent == $macroTwoValue then 2 else 1,
+                $onDropDownConfirmed = Execute_SetMacro,
               ]" />
             <remove_value name="$macroCurrent" />
-            <remove_value name="$macroOneSelected" />
-            <remove_value name="$macroTwoSelected" />
 
             <run_actions ref="Render_Cost_Template">
               <param name="type" value="$type" />
               <param name="name" value="{1972092407, 3021}" />
               <param name="value" value="$buildValue" />
-              <param name="textSelected" value="$textSelected" />
               <param name="category" value="'build'" />
             </run_actions>
 
@@ -290,7 +255,6 @@
               <param name="type" value="$type" />
               <param name="name" value="{1972092407, 3022}" />
               <param name="value" value="$connectValue" />
-              <param name="textSelected" value="$textSelected" />
               <param name="category" value="'connect'" />
             </run_actions>
 
@@ -298,7 +262,6 @@
               <param name="type" value="$type" />
               <param name="name" value="{1972092407, 3023}" />
               <param name="value" value="$disconnectValue" />
-              <param name="textSelected" value="$textSelected" />
               <param name="category" value="'disconnect'" />
             </run_actions>
           </actions>
@@ -310,7 +273,6 @@
             <param name="name" />
             <param name="value" />
             <param name="category" />
-            <param name="textSelected" />
           </params>
           <actions>
             <debug_text text="'Gate Manager Options: Rendering Cost Template'" context="false" filter="scripts" />
@@ -331,7 +293,6 @@
               param="table[
                 $col = 5,
                 $colSpan = 4,
-                $color  = $textSelected,
                 $titleColor = 'Color.text_normal',
                 $halign = 'right',
                 $text = '%,s %s.'.[$value, {1001, 101}],
@@ -343,7 +304,7 @@
               param="table[
                 $col = 1,
                 $colSpan = 3,
-                $text = '  %s'.[{1972092407, 3031}]
+                $text = '  %s'.[{1972092407, 3031}],
               ]" />
             <signal_cue_instantly cue="md.Simple_Menu_API.Make_Slider"
               param="table[
@@ -371,7 +332,7 @@
               param="table[
                 $col = 1,
                 $colSpan = 3,
-                $text = '  %s'.[{1972092407, 3032}]
+                $text = '  %s'.[{1972092407, 3032}],
               ]" />
 
             <signal_cue_instantly cue="md.Simple_Menu_API.Make_Slider"
