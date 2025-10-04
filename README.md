@@ -16,6 +16,7 @@ Compatible with `X4: Foundations 7.60` and upper. At least it written and tested
 - From version `1.10` you can define a costs for building, connecting, disconnecting the objects (if set to `0`, the action will be free of charge)
 - If costs for the building is defined then the destruction will return 30% of the building costs
 - All versions above `1.10` of the mod will have no possibility to make the actions free of charge
+- It’s `non‑breaking` — feel free to remove it whenever you like. Everything you’ve changed will still be there
 
 ## Download
 
