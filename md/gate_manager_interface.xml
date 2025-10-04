@@ -13,7 +13,6 @@
           </conditions>
           <actions>
             <set_value name="player.entity.$gateManagerPending" exact="null" />
-            <set_value name="player.entity.$gateManagerCosts" exact="null" />
             <include_actions ref="Init_Variables" />
           </actions>
         </cue>
