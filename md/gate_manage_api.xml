@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="Gate_Manage_API" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cues>
+
+    <cue name="Main">
+      <actions>
+        <create_list name="$GateManageAPICommands" />
+      </actions>
+      <cues>
+        <cue name="On_Reload" instantiate="true">
+          <conditions>
+            <event_ui_triggered screen="'Gate_Manage_API'" control="'reloaded'" />
+          </conditions>
+          <actions>
+            <create_list name="$GateManageAPICommands" />
+            <append_to_list name="$GateManageAPICommands" exact="['build_gate']" />
+            <append_to_list name="$GateManageAPICommands" exact="['connect_gates']" />
+            <append_to_list name="$GateManageAPICommands" exact="['disconnect_gates']" />
+            <append_to_list name="$GateManageAPICommands" exact="['destroy_gate']" />
+            <append_to_list name="$GateManageAPICommands" exact="['mark_gate']" />
+            <append_to_list name="$GateManageAPICommands" exact="['unmark_gate']" />
+            <append_to_list name="$GateManageAPICommands" exact="['get_gates_macro']" />
+            <signal_cue_instantly cue="Reloaded" />
+          </actions>
+        </cue>
+
+
+        <!--@doc-cue
+          name: Reloaded
+          description: Cue triggered when the Gate Manager API is reloaded.
+          param: none
+          returns: none
+          -->
+
+        <cue name="Reloaded" instantiate="true">
+          <conditions>
+            <event_cue_signalled />
+          </conditions>
+          <actions>
+            <debug_text text="'Gate_Manage_API: Reloaded'"
+              chance="100" filter="general" />
+
+          </actions>
+        </cue>
+
+        <!--@doc-cue
+          name: Process_Command
+          description: Cue to process a gate management command.
+          param: table with the following fields: command, multiple arguments, callback
+
+          There are different commands that can be processed, with different required arguments:
+          - $command = 'build_gate', with other table fields:
+            - $sector: sector object (required)
+            - $macroId: string (required)
+            - $offset: vector (required)
+            - $rotation: quaternion (required if getRotationFromMap is false)
+            - $getRotationFromMap: boolean (optional, default false)
+            - $callback: function name (optional)
+
+          - $command = 'connect_gates', with other table fields:
+            - $gateSource: gate object (required)
+            - $gateTarget: gate object (required)
+            - $callback: function name (optional)
+
+          - $command = 'disconnect_gates', with other table fields:
+            - $gateSource: gate object (required)
+            - $gateTarget: gate object (required)
+            - $callback: function name (optional)
+
+          - $command = 'destroy_gate', with other table fields:
+            - $gate: gate object (required)
+            - $callback: function name (optional)
+
+          - $command = 'mark_gate', with other table fields:
+            - $gate: gate object (required)
+            - $callback: function name (optional)
+
+          - $command = 'unmark_gate', with other table fields:
+            - $gate: gate object (required)
+            - $callback: function name (optional)
+
+          - $command = 'get_gates_macro', with other table fields:
+            - $callback: function name (required)
+        -->
+
+        <cue name="Process_Command" instantiate="true">
+          <conditions>
+            <event_cue_signalled />
+          </conditions>
+          <actions>
+            <set_value name="$args" exact="event.param.clone" />
+            <do_if value="not $args? or $args == null or not $args.isclass.{class.table}">
+              <debug_text text="'Gate_Manage_API: Process_Command invoked without valid args table.'"
+                chance="100" filter="scripts" />
+            </do_if>
+            <do_else>
+              <set_value name="$command" exact="@$args.$command" />
+              <set_value name="$callback" exact="@$args.$callback" />
+              <do_if value="not $command? or @$command == '' or @$command == null">
+                <debug_text text="'Gate_Manage_API: Process_Command invoked without command.'"
+                  chance="100" filter="scripts" />
+              </do_if>
+              <do_else>
+                <do_if value="$command == 'build_gate'">
+                  <do_if value="not $args.$sector? or @$args.$sector == null or not @$args.$sector.isclass.{class.sector}">
+                    <debug_text text="'Gate_Manage_API: build_gate invoked without valid sector.'"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                  <do_if value="not $args.$macroId? or @$args.$macroId == null">
+                    <debug_text text="'Gate_Manage_API: build_gate invoked without valid macro Id.'"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                  <do_if value="not $args.$offset? or @$args.$offset == null">
+                    <debug_text text="'Gate_Manage_API: build_gate invoked without valid offset.'"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                  <do_if value="@$args.$getRotationFromMap == null">
+                    <set_value name="$args.$getRotationFromMap" exact="false" />
+                    <do_if value="not $args.$rotation? or @$args.$rotation == null">
+                      <debug_text text="'Gate_Manage_API: build_gate invoked without valid rotation.'"
+                        chance="100" filter="scripts" />
+                      <remove_value name="$args" />
+                    </do_if>
+                  </do_if>
+                </do_if>
+                <do_elseif value="$command == 'connect_gates' or $command == 'disconnect_gates'">
+                  <do_if value="not $args.$gateSource? or @$args.$gateSource == null or not $args.$gateSource.isclass.{class.gate}">
+                    <debug_text text="'Gate_Manage_API: %s invoked without valid source gate.'.[$command]"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                  <do_if value="not $args.$gateTarget? or @$args.$gateTarget == null or not $args.$gateTarget.isclass.{class.gate}">
+                    <debug_text text="'Gate_Manage_API: %s invoked without valid target gate.'.[$command]"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                </do_elseif>
+                <do_elseif value="$command == 'destroy_gate'">
+                  <do_if value="not $args.$gate? or @$args.$gate == null or not $args.$gate.isclass.{class.gate}">
+                    <debug_text text="'Gate_Manage_API: destroy_gate invoked without valid gate.'"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                </do_elseif>
+                <do_elseif value="$command == 'mark_gate' or $command == 'unmark_gate'">
+                  <do_if value="not $args.$gate? or @$args.$gate == null or not $args.$gate.isclass.{class.gate}">
+                    <debug_text text="'Gate_Manage_API: %s invoked without valid gate.'.[$command]"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                </do_elseif>
+                <do_elseif value="$command == 'get_gates_macro'">
+                  <do_if value="not $callback? or $callback == ''">
+                    <debug_text text="'Gate_Manage_API: get_gates_macro invoked without callback function.'"
+                      chance="100" filter="scripts" />
+                    <remove_value name="$args" />
+                  </do_if>
+                </do_elseif>
+                <do_else>
+                  <debug_text text="'Gate_Manage_API: Process_Command invoked with unknown command %s'.[$command]"
+                    chance="100" filter="scripts" />
+                  <remove_value name="$args" />
+                </do_else>
+                <do_if value="not $args? or @$args == null">
+                  <debug_text text="'Gate_Manage_API: build_gate missing required parameters.'"
+                    chance="100" filter="scripts" />
+                </do_if>
+                <do_else>
+                  <do_if value="$command == 'destroy_gate'">
+                    <debug_text text="'Gate Gate_Manage_API: destroying gate %s in sector %s'.[@$gateName, @$gateSectorName]" chance="100" filter="scripts" />
+                    <destroy_object object="$gate" explosion="false" />
+                    <set_value name="$args.$result" exact="success" />
+                    <set_value name="$args.$info" exact="'GatesDestroyed'" />
+                    <do_if value="$args.$callback? and $args.$callback != ''">
+                      <signal_cue_instantly cue="$args.$callback" param="$args" />
+                    </do_if>
+                  </do_if>
+                  <do_else>
+                    <do_if value="not player.entity.$GateManageArgs?">
+                      <set_value name="player.entity.$GateManageArgs" exact="[]" />
+                    </do_if>
+                    <append_to_list name="player.entity.$GateManageArgs" exact="$args" />
+                    <debug_text
+                      text="'Gate_Manage_API: Process_Command invoked with command %s and args: %s'.[$command, $args]"
+                      chance="100" filter="scripts" />
+                    <raise_lua_event name="'GateManageAPI.HandleCommand'" />
+                  </do_else>
+                </do_else>
+              </do_else>
+            </do_else>
+            <remove_value name="$args" />
+          </actions>
+        </cue>
+
+        <!--@doc-cue
+          name: Command_Result
+          description: Cue to capture the result of a gate management command.
+          param: none
+          returns: none
+          Note:
+            The result will be passed to the callback function specified in the command, if any.
+            It will be present as a table with the following fields:
+            - $command: string, the command that was executed
+            - $result: string, either 'success' or 'error'
+            - $info: short string describing the result
+            - $callback: the callback function to invoke
+            - other input fields depending on the command executed (see Process_Command cue for details).
+
+            For two commands the result will contain additional fields:
+            - build_gate: if successful, will contain $gate: the created gate object
+            - get_gates_macro: if successful, will contain $gatesMacro: a list of gate macros
+          -->
+        <cue name="Command_Result" instantiate="true" namespace="this">
+          <conditions>
+            <event_ui_triggered screen="'Gate_Manage_API'" control="'CommandResult'" />
+          </conditions>
+          <actions>
+            <debug_text
+              text="'Gate_Manage_API: Capture_Results invoked with data in $GateManageResult: %s'.[player.entity.$GateManageResult]"
+              chance="100" filter="scripts" />
+            <!--Look
+            up the action by id to get the callback.-->
+            <set_value name="$result" exact="player.entity.$GateManageResult" />
+
+
+            <!--Handle
+            the callback, if it is still valid.-->
+            <!--Note:
+            need to cast the object into an MD suitable component.-->
+            <do_if value="$result.$callback? and $result.$callback.exists">
+
+              <!--Make
+              a copy of the params to pass to the callback.
+              This is to avoid issues with references and changes to the original data.-->
+              <set_value name="$result" exact="player.entity.$GateManageResult.clone" />
+
+              <!--Populate
+              with result as param-->
+              <signal_cue_instantly cue="$result.$callback" param="$result" />
+            </do_if>
+          </actions>
+        </cue>
+      </cues>
+    </cue>
+
+
+  </cues>
+</mdscript>
