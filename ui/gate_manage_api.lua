@@ -27,16 +27,21 @@ ffi.cdef [[
 	void        SetSelectedMapComponent(UniverseID holomapid, UniverseID componentid);
 	void        SetSelectedMapComponents(UniverseID holomapid, UniverseID* componentids, uint32_t numcomponentids);
 	bool        SetSofttarget(UniverseID componentid, const char*const connectionname);
+	bool        FindMacro(const char* macroname);
+	uint32_t    GetNumMacrosStartingWith(const char* partialmacroname);
+	uint32_t    GetMacrosStartingWith(const char** result, uint32_t resultlen, const char* partialmacroname);
 ]]
 
-local GateManager = {
+local GateManageAPI = {
   playerId = 0,
+  gatesTable = {},
+  acceleratorsTable = {},
 }
 
 local Lib = require("extensions.sn_mod_support_apis.ui.Library")
 
 local function debugTrace(message)
-  local text = "Gate Manager: " .. message
+  local text = "Gate_Manage_API: " .. message
   if type(DebugError) == "function" then
     DebugError(text)
   else
@@ -51,9 +56,9 @@ local function getPlayerId()
   end
 
   local converted = ConvertStringTo64Bit(tostring(current))
-  if converted ~= 0 and converted ~= GateManager.playerId then
+  if converted ~= 0 and converted ~= GateManageAPI.playerId then
     debugTrace("updating player_id to " .. tostring(converted))
-    GateManager.playerId = converted
+    GateManageAPI.playerId = converted
   end
 end
 
@@ -96,25 +101,31 @@ local function RevertAndApplyMapRotation()
   end
 end
 
-local function toPosRot(raw)
+local function toPosRot(offset, rotation)
   local posRot = ffi.new("UIPosRot")
-  if raw then
-    posRot.x = raw.x or 0.0
-    posRot.y = raw.y or 0.0
-    posRot.z = raw.z or 0.0
-    posRot.yaw = RevertAndApplyMapRotation() * 180.0 / math.pi
-    posRot.pitch = 0.0
-    posRot.roll = 0.0
+  if offset and type(offset) == "table" then
+    posRot.x = offset.x or 0.0
+    posRot.y = offset.y or 0.0
+    posRot.z = offset.z or 0.0
+    if rotation and type(rotation) == "table" then
+      posRot.yaw = rotation.yaw or 0.0
+      posRot.pitch = rotation.pitch or 0.0
+      posRot.roll = rotation.roll or 0.0
+    else
+      posRot.yaw = RevertAndApplyMapRotation() * 180.0 / math.pi
+      posRot.pitch = 0.0
+      posRot.roll = 0.0
+    end
   end
   return posRot
 end
 
 local function recordResult(data)
   debugTrace("recordResult called for command ".. tostring(data and data.command) .. " with result " .. tostring(data and data.result))
-  if GateManager.playerId ~= 0 then
+  if GateManageAPI.playerId ~= 0 then
     local payload = data or {}
-    SetNPCBlackboard(GateManager.playerId, "$gateManagerResult", payload)
-    AddUITriggeredEvent("Gate_Manager_Interface", "onResult")
+    SetNPCBlackboard(GateManageAPI.playerId, "$GateManageAPIResult", payload)
+    AddUITriggeredEvent("Gate_Manage_API", "CommandResult")
   end
 end
 
@@ -123,7 +134,7 @@ local function reportError(data)
   data.result = "error"
   recordResult(data)
 
-  local message = "Gate Manager error"
+  local message = "Gate_Manage_API error"
   if data.info then
     message = message .. ": " .. tostring(data.info)
   end
@@ -142,19 +153,19 @@ end
 
 
 local function getArgs()
-  if GateManager.playerId == 0 then
+  if GateManageAPI.playerId == 0 then
     debugTrace("getArgs unable to resolve player id")
   else
-    local list = GetNPCBlackboard(GateManager.playerId, "$gateManagerArgs")
+    local list = GetNPCBlackboard(GateManageAPI.playerId, "$GateManageAPICommand")
     if type(list) == "table" then
       debugTrace("getArgs retrieved " .. tostring(#list) .. " entries from blackboard")
       local args = list[#list]
-      SetNPCBlackboard(GateManager.playerId, "$gateManagerArgs", nil)
+      SetNPCBlackboard(GateManageAPI.playerId, "$GateManageAPICommand", nil)
       return args
     elseif list ~= nil then
       debugTrace("getArgs received non-table payload of type " .. type(list))
     else
-      debugTrace("getArgs found no blackboard entries for player " .. tostring(GateManager.playerId))
+      debugTrace("getArgs found no blackboard entries for player " .. tostring(GateManageAPI.playerId))
     end
   end
   return nil
@@ -176,17 +187,60 @@ local function gate_has_connection(id)
   return gate_destination_id(id) ~= 0
 end
 
-function GateManager.CreateGate(args)
+function GateManageAPI.CollectGateMacros()
+  GateManageAPI.gatesTable = {}
+  GateManageAPI.acceleratorsTable = {}
+  local n = C.GetNumMacrosStartingWith("props_")
+  if n > 0 then
+    local buf = ffi.new("const char*[?]", n)
+    n = C.GetMacrosStartingWith(buf, n, "props_")
+    for i = 0, n - 1 do
+      local macro = ffi.string(buf[i])
+      if IsMacroClass(macro, "gate") then
+        local name = GetMacroData(macro, "name")
+        local icon = GetMacroData(macro, "icon")
+        if (icon == "mapob_jumpgate" or icon == "mapob_transorbital_accelerator") then
+          local macroEntry = { name = name, macro = macro, icon = icon }
+          if icon == "mapob_transorbital_accelerator" then
+            macroEntry.isAccelerator = true
+            table.insert(GateManageAPI.acceleratorsTable, macroEntry)
+          else
+            macroEntry.isAccelerator = false
+            table.insert(GateManageAPI.gatesTable, macroEntry)
+          end
+          debugTrace("Found gate macro: " .. macro .. " (" .. name .. "), isAccelerator=" .. tostring(macroEntry.isAccelerator))
+        end
+      end
+    end
+  end
+  debugTrace("Collected " .. tostring(#GateManageAPI.gatesTable) .. " gate macros and " .. tostring(#GateManageAPI.acceleratorsTable) .. " accelerator macros")
+end
+
+function GateManageAPI.CreateGate(args)
   debugTrace("CreateGate called in sector " .. GetComponentData(args.sector, "macro"))
   local sector = toUniverseId(args.sector)
-  local macro = args.macro
+  local macroId = args.macroId
   if sector == 0 then
     args.info = "MissingSector"
     reportError(args)
     return
   end
-  if not macro or macro == "" then
+  if not macroId or macroId == "" then
     args.info = "MissingMacro"
+    reportError(args)
+    return
+  end
+
+  if not C.FindMacro(macroId) then
+    args.info = "InvalidMacro"
+    args.detail = string.format("Macro not found: %s", macroId)
+    reportError(args)
+    return
+  end
+
+  if not IsMacroClass(macroId, "gate") then
+    args.info = "InvalidMacroClass"
+    args.detail = string.format("Macro is not a gate: %s", macroId)
     reportError(args)
     return
   end
@@ -200,10 +254,15 @@ function GateManager.CreateGate(args)
       mapstate.offset.roll))
   end
 
-  local posRot = toPosRot(args.offset)
+  local posRot = nil
+  if (args.getRotationFromMap) then
+    posRot = toPosRot(args.offset, nil)
+  else
+    posRot = toPosRot(args.offset, args.rotation)
+  end
   debugTrace(string.format("Spawning gate with macro %s at x=%f, y=%f, z=%f, yaw=%f, pitch=%f, roll=%f", macro, posRot.x, posRot.y,
     posRot.z, posRot.yaw, posRot.pitch, posRot.roll))
-  local object = C.SpawnObjectAtPos2(macro, sector, posRot, "ownerless")
+  local object = C.SpawnObjectAtPos2(macroId, sector, posRot, "ownerless")
 
   if object == nil then
     args.info = "SpawnFailed"
@@ -215,15 +274,12 @@ function GateManager.CreateGate(args)
 
   args.info = "GateCreated"
   args.gate = ConvertStringToLuaID(tostring(object))
-  args.sector = args.sector
   reportSuccess(args)
 end
 
-function GateManager.ConnectGates(args)
+function GateManageAPI.ConnectGates(args)
   local gateSource = toUniverseId(args.gateSource)
   local gateTarget = toUniverseId(args.gateTarget)
-  local sectorSource = GetComponentData(gateSource, "sector")
-  local sectorTarget = GetComponentData(gateTarget, "sector")
 
   if gateSource == 0 or gateTarget == 0 or gateSource == gateTarget then
     args.info = "InvalidGateIDs"
@@ -243,6 +299,27 @@ function GateManager.ConnectGates(args)
     return
   end
 
+  local gateSourceIsAccelerator = GetComponentData(gateSource, "isaccelerator")
+  local gateTargetIsAccelerator = GetComponentData(gateTarget, "isaccelerator")
+
+  debugTrace(string.format("Gate source %s is accelerator: %s", tostring(gateSource), tostring(gateSourceIsAccelerator)))
+  debugTrace(string.format("Gate target %s is accelerator: %s", tostring(gateTarget), tostring(gateTargetIsAccelerator)))
+
+  if gateSourceIsAccelerator ~= gateTargetIsAccelerator then
+    args.info = "IncompatibleGates"
+    reportError(args)
+    return
+  end
+
+  local sourceGateMacro = GetComponentData(gateSource, "macro")
+  local sourceMacroIsAccelerator = GetMacroData(sourceGateMacro, "isaccelerator")
+
+  debugTrace(string.format("Gate source macro %s is accelerator: %s", tostring(sourceGateMacro), tostring(sourceMacroIsAccelerator)))
+
+
+  local sectorSource = GetComponentData(gateSource, "sector")
+  local sectorTarget = GetComponentData(gateTarget, "sector")
+
   C.AddGateConnection(gateSource, gateTarget)
   local menu = Lib.Get_Egosoft_Menu("MapMenu")
   debugTrace("MapMenu is " .. tostring(menu))
@@ -256,7 +333,7 @@ function GateManager.ConnectGates(args)
   reportSuccess(args)
 end
 
-function GateManager.DisconnectGate(args)
+function GateManageAPI.DisconnectGate(args)
   local gateSource = toUniverseId(args.gateSource)
   local sectorSource = GetComponentData(gateSource, "sector")
   local gateTarget = toUniverseId(args.gateTarget)
@@ -289,7 +366,7 @@ function GateManager.DisconnectGate(args)
   reportSuccess(args)
 end
 
-function GateManager.MarkGateOnMap(args)
+function GateManageAPI.MarkGateOnMap(args)
   local gate = tostring(args.gate)
   if not gate or gate == "" then
     reportError({ info = "InvalidGateID" })
@@ -316,7 +393,7 @@ function GateManager.MarkGateOnMap(args)
   reportSuccess(args)
 end
 
-function GateManager.HandleCommand(_, _)
+function GateManageAPI.HandleCommand(_, _)
   local args = getArgs()
   if not args or type(args) ~= "table" then
     debugTrace("HandleCommand invoked without args or invalid args")
@@ -325,13 +402,17 @@ function GateManager.HandleCommand(_, _)
   end
   debugTrace("HandleCommand received command: " .. tostring(args.command))
   if args.command == "build_gate" then
-    GateManager.CreateGate(args)
+    GateManageAPI.CreateGate(args)
   elseif args.command == "connect_gates" then
-    GateManager.ConnectGates(args)
+    GateManageAPI.ConnectGates(args)
   elseif args.command == "disconnect_gates" then
-    GateManager.DisconnectGate(args)
+    GateManageAPI.DisconnectGate(args)
   elseif args.command == "mark_gate" or args.command == "unmark_gate" then
-    GateManager.MarkGateOnMap(args)
+    GateManageAPI.MarkGateOnMap(args)
+  elseif args.command == "get_macro_tables" then
+    args.gates = GateManageAPI.gatesTable
+    args.accelerators = GateManageAPI.acceleratorsTable
+    reportSuccess(args)
   else
     debugTrace("HandleCommand received unknown command: " .. tostring(args.command))
     args.info = "UnknownCommand"
@@ -339,12 +420,14 @@ function GateManager.HandleCommand(_, _)
   end
 end
 
-function GateManager.Init()
+function GateManageAPI.Init()
   getPlayerId()
   ---@diagnostic disable-next-line: undefined-global
-  RegisterEvent("GateManager.HandleCommand", GateManager.HandleCommand)
+  RegisterEvent("GateManageAPI.HandleCommand", GateManageAPI.HandleCommand)
+  AddUITriggeredEvent("Gate_Manage_API", "Reloaded")
+  GateManageAPI.CollectGateMacros()
 end
 
-Register_Require_With_Init("extensions.gate_manager.ui.gate_manager", GateManager, GateManager.Init)
+Register_Require_With_Init("extensions.gate_manager.ui.gate_manager", GateManageAPI, GateManageAPI.Init)
 
-return GateManager
+return GateManageAPI
