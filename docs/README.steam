@@ -15,7 +15,7 @@ Compatible with [b]X4: Foundations 7.60[/b] and upper. At least it written and t
 [*] From version [b]1.10[/b] you can choose the type of the object to build (as for Jump Gate as for Accelerator)
 [*] From version [b]1.10[/b] you can define a costs for building, connecting, disconnecting the objects (if set to [b]0[/b], the action will be free of charge)
 [*] If costs for the building is defined then the destruction will return 30% of the building costs
-[*] All versions above [b]1.10[/b] of the mod will have no possibility to make the actions free of charge
+[*] All versions  of the mod from [b]1.20[/b] and above will have no possibility to make the actions free of charge
 [*] It’s [b]non‑breaking[/b] — feel free to remove it whenever you like. Everything you’ve changed will still be there
 [/list]
 [h2][b]Download[/b][/h2]
@@ -30,6 +30,13 @@ As it uses context menu in the Galaxy Map view, it requires the [b]Mod Support A
 [*] It is available via Steam - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2042901274]SirNukes Mod Support APIs[/url]
 [*] Or via the Nexus Mods - [url=https://www.nexusmods.com/x4foundations/mods/503]Mod Support APIs[/url]
 [/list]
+And from version [b]1.16[/b] and above it requires the [b]Gate Manage API[/b]. By the same author as this mod.
+[list]
+[*] It is available via Steam - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=]Gate Manage API[/url]
+[*] Or via the Nexus Mods - [url=https://www.nexusmods.com/x4foundations/mods/]Gate Manage API[/url]
+[/list]
+Normally, at least for Steam users, these dependencies will be installed automatically.
+
 [h2][b]How to use[/b][/h2]
 
 After installation, you can use the context menu in the Galaxy Map view to build, connect, disconnect and destroy Jump Gates and Accelerators.
@@ -190,6 +197,13 @@ Video demonstration of the Gate Manager. Options menu, types and costs
 [/list]
 [h2][b]Change Log[/b][/h2]
 
+[h2][1.16] - 2025-10-15[/h2]
+[list]
+[*] Added
+[list]
+[*] Required [b]Gate Manage API[/b] version [b]1.00[/b] and upper
+[/list]
+[/list]
 [h2][1.10] - 2025-10-04[/h2]
 [list]
 [*] Added
