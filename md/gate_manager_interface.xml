@@ -305,15 +305,11 @@
               chance="100"
               filter="scripts" />
           </do_if>
-          <set_value name="$gateName" exact="if $gate.name? then $gate.name else ''" />
-          <find_sector name="$gateSector" macro="$gate.sector.macro" />
-          <debug_text text="'Gate Manager: destroying gate %s in sector %s'.[@$gateName, @$gateSector.knownname]" chance="100" filter="scripts" />
+          <debug_text text="'Gate Manager: destroying gate %s in sector %s'.[@$gate.name, @$gate.sector.knownname]" chance="100" filter="scripts" />
           <set_value name="$args"
             exact="table[
               $command  = 'destroy_gate',
               $gate     = @$gate,
-              $gateName = @$gateName,
-              $sector   = @$gateSector,
               $callback = Capture_Results,
               ]" />
           <signal_cue_instantly cue="md.Gate_Manage_API.Process_Command" param="$args" />

@@ -15,7 +15,7 @@ Compatible with `X4: Foundations 7.60` and upper. At least it written and tested
 - From version `1.10` you can choose the type of the object to build (as for Jump Gate as for Accelerator)
 - From version `1.10` you can define a costs for building, connecting, disconnecting the objects (if set to `0`, the action will be free of charge)
 - If costs for the building is defined then the destruction will return 30% of the building costs
-- All versions above `1.10` of the mod will have no possibility to make the actions free of charge
+- All versions  of the mod from `1.20` and above will have no possibility to make the actions free of charge
 - It’s `non‑breaking` — feel free to remove it whenever you like. Everything you’ve changed will still be there
 
 ## Download
@@ -29,6 +29,13 @@ As it uses context menu in the Galaxy Map view, it requires the `Mod Support API
 
 - It is available via Steam - [SirNukes Mod Support APIs](https://steamcommunity.com/sharedfiles/filedetails/?id=2042901274)
 - Or via the Nexus Mods - [Mod Support APIs](https://www.nexusmods.com/x4foundations/mods/503)
+
+And from version `1.16` and above it requires the `Gate Manage API`. By the same author as this mod.
+
+- It is available via Steam - [Gate Manage API](https://steamcommunity.com/sharedfiles/filedetails/?id=)
+- Or via the Nexus Mods - [Gate Manage API](https://www.nexusmods.com/x4foundations/mods/)
+
+Normally, at least for Steam users, these dependencies will be installed automatically.
 
 ## How to use
 
@@ -186,6 +193,11 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 - Thanks to [SirNukes](https://next.nexusmods.com/profile/sirnukes?gameId=2659) for his awesome `Mod Support APIs` without which this mod would not be possible!
 
 ## Change Log
+
+### [1.16] - 2025-10-15
+
+- Added
+  - Required `Gate Manage API` version `1.00` and upper
 
 ### [1.10] - 2025-10-04
 
