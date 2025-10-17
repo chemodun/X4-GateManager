@@ -2,8 +2,8 @@
 <content
   id="ws_3577926900"
   author="Chem O`Dun"
-  version="110"
-  date="2025-10-04"
+  version="116"
+  date="2025-10-17"
   save="false"
   lastupdate="1759607426"
   name="Gate Manager"
@@ -47,5 +47,6 @@
   <text language="380"
     description="Додає дії контекстного меню карти для будівництва, з’єднання та знищення визначених гравцем стрибкових брам і прискорювачів."></text>
   <dependency version="760"></dependency>
-  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" version="193"></dependency>
+  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" version="193" />
+  <dependency id="ws_3588643062" optional="false" name="Gate Manage API" version="100" />
 </content>

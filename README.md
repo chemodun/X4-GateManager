@@ -194,7 +194,7 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 
 ## Change Log
 
-### [1.16] - 2025-10-15
+### [1.16] - 2025-10-17
 
 - Added
   - Required `Gate Manage API` version `1.00` and upper
