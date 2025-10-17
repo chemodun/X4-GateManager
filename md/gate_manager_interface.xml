@@ -281,7 +281,7 @@
           <debug_text
             text="'Gate Manager:Sending %s with args: %s'.[$args.$command, $args]"
             chance="100" filter="scripts" />
-          <signal_cue_instantly cue="md.Gate_Manage_API.Process_Command" param="$args" />
+          <signal_cue_instantly cue="md.Gate_Manage_API.Request" param="$args" />
           <remove_value name="$args" />
         </do_else>
       </actions>
@@ -312,7 +312,7 @@
               $gate     = @$gate,
               $callback = Capture_Results,
               ]" />
-          <signal_cue_instantly cue="md.Gate_Manage_API.Process_Command" param="$args" />
+          <signal_cue_instantly cue="md.Gate_Manage_API.Request" param="$args" />
           <remove_value name="$gateSectorName" />
           <remove_value name="$gateSector" />
           <remove_value name="$gateTypeText" />
@@ -373,7 +373,7 @@
           <debug_text
             text="'Gate Manager:Sending %s with args: %s'.[$args.$command, $args]"
             chance="100" filter="scripts" />
-          <signal_cue_instantly cue="md.Gate_Manage_API.Process_Command" param="$args" />
+          <signal_cue_instantly cue="md.Gate_Manage_API.Request" param="$args" />
         </do_if>
         <remove_value name="$args" />
         <remove_value name="$current" />
@@ -410,7 +410,7 @@
           <debug_text
             text="'Gate Manager: Sending %s with args: %s'.[$args.$command, $args]"
             chance="100" filter="scripts" />
-          <signal_cue_instantly cue="md.Gate_Manage_API.Process_Command" param="$args" />
+          <signal_cue_instantly cue="md.Gate_Manage_API.Request" param="$args" />
           <remove_value name="$args" />
         </do_else>
       </actions>
@@ -449,7 +449,7 @@
                 <param name="operation" value="'destroy'" />
               </run_actions>
               <run_actions ref="Notify_On_Finish">
-                <param name="info" value="{1972092407, 2002}.[@$result.$gateName, @$result.$sector.knownname]" />
+                <param name="info" value="{1972092407, 2002}.[@$result.$name, @$result.$sector.knownname]" />
                 <param name="object" value="@$result.$sector" />
                 <param name="money" value="$money" />
               </run_actions>
