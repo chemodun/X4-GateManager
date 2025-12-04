@@ -7,7 +7,7 @@
       <cues>
         <library name="Ensure_Variables" purpose="include_actions">
           <actions>
-            <include_actions ref="md.Gate_Manager_Interface.Init_Variables" />
+            <include_actions ref="md.Gate_Manager_Interface.GM_Init_Variables" />
           </actions>
         </library>
 
@@ -17,7 +17,6 @@
           </conditions>
           <actions>
             <debug_text text="'Gate Manager Options: Registering Options Menus'" context="false" filter="scripts" />
-            <include_actions ref="Ensure_Variables" />
             <signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu"
               param="table[
                 $id      = 'gate_manager_options_menu',
