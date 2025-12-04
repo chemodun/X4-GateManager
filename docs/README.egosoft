@@ -17,6 +17,7 @@ Compatible with [b]X4: Foundations 7.60[/b] and upper. At least it written and t
 [*] If costs for the building is defined then the destruction will return 30% of the building costs
 [*] All versions  of the mod from [b]1.20[/b] and above will have no possibility to make the actions free of charge
 [*] It’s [b]non‑breaking[/b] — feel free to remove it whenever you like. Everything you’ve changed will still be there
+[*] From version [b]1.17[/b] it can detect [url=https://www.nexusmods.com/x4foundations/mods/552]UI Extensions and HUD[/url] mod by [url=https://next.nexusmods.com/profile/kuertee?gameId=2659]kuertee[/url] and adjust the context menu style accordingly
 [/list]
 [size=130][u]Download[/u][/size]
 
@@ -50,6 +51,7 @@ After installation, you can use the context menu in the Galaxy Map view to build
 [*] If not enough money to build the object, the option will be disabled.
 [/list]
 [spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_build.png[/img][/spoiler]
+[spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_build_uix.png[/img][/spoiler]
 [spoiler][img]https://raw.githubusercontent.com/chemodun/X4-GateManager/refs/heads/main/docs/images/context_menu_build_insufficient_funds.png[/img][/spoiler]
 
 By default, the Jump Gate or Accelerator will be oriented from "South" to "North". If you want to change the orientation, please read the appropriate section below.
@@ -194,6 +196,21 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 [/list]
 [size=130][u]Change Log[/u][/size]
 
+[size=125][u][1.17] - 2025-12-04[/u][/size]
+[list]
+[*] Added
+[list]
+[*] Detection of [b]UI Extensions and HUD[/b] mod by [b]kuertee[/b] to adjust the context menu style accordingly
+[/list]
+[*] Improved
+[list]
+[*] Minor code improvements
+[/list]
+[*] Fixed
+[list]
+[*] Ghost [b]Gate Manager[/b] entry in the context menu in some cases
+[/list]
+[/list]
 [size=125][u][1.16] - 2025-10-17[/u][/size]
 [list]
 [*] Added
