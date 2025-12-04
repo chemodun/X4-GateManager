@@ -2,8 +2,8 @@
 <content
   id="ws_3577926900"
   author="Chem O`Dun"
-  version="116"
-  date="2025-10-17"
+  version="117"
+  date="2025-12-04"
   save="false"
   lastupdate="1760725943"
   name="Gate Manager"
@@ -49,4 +49,5 @@
   <dependency version="760"></dependency>
   <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" version="193"></dependency>
   <dependency id="ws_3588643062" optional="false" name="Gate Manage API" version="100"></dependency>
+  <dependency id="kuerteeUIExtensionsAndHUD" optional="true" name="kuertee UI Extensions and HUD" version="760"></dependency>
 </content>

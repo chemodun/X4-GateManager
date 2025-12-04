@@ -17,6 +17,7 @@ Compatible with `X4: Foundations 7.60` and upper. At least it written and tested
 - If costs for the building is defined then the destruction will return 30% of the building costs
 - All versions  of the mod from `1.20` and above will have no possibility to make the actions free of charge
 - It’s `non‑breaking` — feel free to remove it whenever you like. Everything you’ve changed will still be there
+- From version `1.17` it can detect [UI Extensions and HUD](https://www.nexusmods.com/x4foundations/mods/552) mod by [kuertee](https://next.nexusmods.com/profile/kuertee?gameId=2659) and adjust the context menu style accordingly
 
 ## Download
 
@@ -50,6 +51,7 @@ After installation, you can use the context menu in the Galaxy Map view to build
 - If not enough money to build the object, the option will be disabled.
 
 ![Build Jump Gate or Accelerator](docs/images/context_menu_build.png)
+![Build Jump Gate or Accelerator when UI Extensions and HUD mod is detected](docs/images/context_menu_build_uix.png)
 ![Build Jump Gate or Accelerator. Insufficient Funds](docs/images/context_menu_build_insufficient_funds.png)
 
 By default, the Jump Gate or Accelerator will be oriented from "South" to "North". If you want to change the orientation, please read the appropriate section below.
@@ -193,6 +195,15 @@ In addition, all your actions will be logged in the logbook (accessible via the 
 - Thanks to [SirNukes](https://next.nexusmods.com/profile/sirnukes?gameId=2659) for his awesome `Mod Support APIs` without which this mod would not be possible!
 
 ## Change Log
+
+### [1.17] - 2025-12-04
+
+- Added
+  - Detection of `UI Extensions and HUD` mod by `kuertee` to adjust the context menu style accordingly
+- Improved
+  - Minor code improvements
+- Fixed
+  - Ghost `Gate Manager` entry in the context menu in some cases
 
 ### [1.16] - 2025-10-17
 
